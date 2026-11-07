@@ -1,0 +1,125 @@
+{
+  "task": "T-PR-09",
+  "title": "ICL 最优性的信息论/Bayesian 框架",
+  "date": "2026-11-07",
+  "branch": "arena/62fe3fd4-paradigm-routing",
+  "anchor": "这几个最优性依赖任务结构是不是相当于神经网络是否是目标的最简描述？…我感觉确实有一些核心范式可以支持高效的 icl，例如 bayesian 和统计和信息理论下的建模",
+  "queries": [
+    {
+      "id": "S01",
+      "query": "minimum description length in-context learning demonstration selection",
+      "round": 1,
+      "hits": ["2302.09579", "2401.12087", "2510.12077", "2504.00395"],
+      "note": "MDL 主线；多数是 MDL 用于表示评测或模型选择，不是 ICL demo 选择"
+    },
+    {
+      "id": "S01b",
+      "query": "arXiv 2212.10375 self-adaptive in-context learning information compression",
+      "round": 2,
+      "hits": ["2212.10375"],
+      "note": "命中 Q1 的核心：MDL-based select-then-rank，ACL 2023，8 数据集 40% 相对提升"
+    },
+    {
+      "id": "S02",
+      "query": "PAC-Bayes in-context learning Bayesian inference 2111.02080",
+      "round": 1,
+      "hits": ["2111.02080", "Viallard PAC-Bayes (PMLR v238)"],
+      "note": "2111.02080 全文 ar5iv 可读；Viallard 是通用 disintegrated PAC-Bayes，非 ICL 专用 → 死胡同"
+    },
+    {
+      "id": "S03",
+      "query": "compression ratio parameter count memorization phase transition language model",
+      "round": 2,
+      "hits": ["2510.12077", "2510.23671", "2504.00395"],
+      "note": "全是压缩性度量侧；无 N vs K(data) 的直接对照测量"
+    },
+    {
+      "id": "S04",
+      "query": "generalization bounds in-context learning transformers",
+      "round": 2,
+      "hits": ["2301.07067", "2409.12293", "2310.13220"],
+      "note": "三条互补的统计界：稳定性/covering、线性系统、Rademacher；均不含互信息项"
+    },
+    {
+      "id": "S05",
+      "query": "information-theoretic bound in-context learning mutual information demonstrations",
+      "round": 3,
+      "hits": [],
+      "note": "无直接结果；返回的均是泛化界论文，不含 I(target;context) 形式"
+    },
+    {
+      "id": "S06",
+      "query": "mutual information context demonstrations bound prompt",
+      "round": 3,
+      "hits": [],
+      "note": "同上；N4 由此确立为负结果"
+    },
+    {
+      "id": "S07",
+      "query": "Kolmogorov complexity 2509.22445 description length transformers",
+      "round": 3,
+      "hits": ["2509.22445"],
+      "note": "ICLR 2026；渐近最优描述长度目标存在，但标准优化器从随机初始化找不到"
+    },
+    {
+      "id": "S08",
+      "query": "2202.12837 rethinking role of demonstrations random labels",
+      "round": 3,
+      "hits": ["2202.12837"],
+      "note": "EMNLP 2022；随机标签几乎不掉分 → Bayesian 类比第 4 环断裂的关键证据"
+    },
+    {
+      "id": "S09",
+      "query": "demo selection posterior information gain in-context learning",
+      "round": 3,
+      "hits": [],
+      "note": "无结果；返回的是 diversity/coverage 类启发式（非 posterior 信息增益）→ Q3(d) 负结果"
+    },
+    {
+      "id": "S10",
+      "query": "active learning information gain demonstration selection LLM prompt",
+      "round": 3,
+      "hits": [],
+      "note": "第二措辞变体，仍无 posterior 信息增益准则 → 负结果确认"
+    }
+  ],
+  "fetches": [
+    {"id": "F01", "url": "https://arxiv.org/abs/2212.10375", "ok": true, "used_for": "MDL select-then-rank 的方法与数字"},
+    {"id": "F02", "url": "https://arxiv.org/abs/2509.22445", "ok": true, "used_for": "渐近最优描述长度目标 + 优化器失败限定"},
+    {"id": "F03", "url": "https://arxiv.org/abs/2202.12837", "ok": true, "used_for": "随机标签实验，12 模型含 GPT-3"}
+  ],
+  "self_corrections": [
+    {
+      "id": "C1",
+      "what": "初稿把 2111.02080 的证明误写成'Bernstein-von Mises 适用'",
+      "fix": "回读附录后改为'观测既不独立也不同分布，BvM 不能直接用，论文证的是分布失配下仍最优，靠 KL 项之和 > 失配误差项'",
+      "trigger": "任务书要求不得从记忆引用技术细节"
+    },
+    {
+      "id": "C2",
+      "what": "初稿把 2202.12837 当作对 Bayesian 叙事的全面反驳",
+      "fix": "收窄到'概念识别型任务'，并注明推理任务上未测；补入自我质询 2 并在 §4.4 加注释",
+      "trigger": "自我质询环节发现适用范围越界"
+    },
+    {
+      "id": "C3",
+      "what": "初稿把 2212.10375 式的'MDL = demo 选择'说成已有等价性定理",
+      "fix": "改为'是算法而非等价性定理'，P1 判决因此保持部分证明而非已证明",
+      "trigger": "回读 2212.10375 只给方法+实验，未证最优性等价"
+    }
+  ],
+  "negative_results": [
+    {"id": "N1", "missing": "PAC-Bayes 风格的 ICL 泛化界", "queries": ["S02", "S04"], "conf_cap": 0.4},
+    {"id": "N2", "missing": "N 参数 vs K(data) 的直接对比测量", "queries": ["S01", "S03"], "conf_cap": 0.4},
+    {"id": "N3", "missing": "Chinchilla 曲线被解释为 memorization→compression 相变", "queries": ["S03"], "conf_cap": 0.45},
+    {"id": "N4", "missing": "I(target;context) 形式的 ICL 信息论界", "queries": ["S05", "S06", "S02"], "conf_cap": 0.45},
+    {"id": "N5", "missing": "attention 前向计算 = Bayes 更新的等价定理", "queries": ["S02", "S04"], "conf_cap": 0.4},
+    {"id": "N6", "missing": "posterior 信息增益的 demo 选择准则", "queries": ["S09", "S10"], "conf_cap": 0.45}
+  ],
+  "channel_notes": [
+    "arxiv.org/abs/* 与 html/*vN 可用，本轮 3/3 抓取成功",
+    "arxiv.org/pdf/* 未尝试（T-PR-07/08 三次失败记录在案）",
+    "web_search 对 MDL 类查询噪声大，需 'in-context' 关键词收窄",
+    "loop/prompt-first/* 与 sop/arena-loop-pipeline.md 仍不存在（第三次记录）"
+  ]
+}
