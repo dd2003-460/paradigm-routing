@@ -26,3 +26,11 @@
 ## 通道
 - `fetch_page` 本轮 **0 次**：S06/S07 的 web_search 已返回目标论文 HTML 正文片段（含定理编号、公式、结果表），信息密度够用。代价写入 `verification_gaps`（只引陈述、不引证明）。
 - 未访问 `arxiv.org/pdf/`（历史四次失败）。
+
+## 追加检索（成璐 2026-11-08 追加 Q5「动态适配」后）
+| 轮 | query 主题 | 关键命中 |
+|---|---|---|
+| S08 | overthinking / 自适应思考预算 | `2412.21187`（1,953%）、`2506.18237` AdapThink、NoWait（ID 未核）、SelfBudgeter（ID 未核）、`2026.findings-acl.1285`（"models lack adaptive computation"） |
+| S09 | SOP 归纳 / 策略选择的 prompt 可激发性 | `2510.04618` ACE、`2504.07952` Dynamic Cheatsheet、`2409.07429` AWM、`2402.03620` Self-Discover、`2505.13379` Thinkless、`2510.07364`（91%/12%）、`2507.11423`（依从率 32–99%） |
+
+**为什么必须追加**：远端在 `c879af4` 给任务书加了 Q5（四个子问题 + 整理/写SOP/研究推进的映射）。**这不是可选项**——任务书新增内容属于交付范围。本地先 `git pull --rebase`（1 local / 1 remote 分叉，文件不相交，rebase 干净），再补检索与 §9。

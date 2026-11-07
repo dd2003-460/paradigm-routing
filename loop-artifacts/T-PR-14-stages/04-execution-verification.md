@@ -33,3 +33,13 @@ wc -l research/reasoning-as-search-survey.md          # 327
 python3 -c "import json;json.load(open('research/search-log-reasoning-as-search.json'))"   # pass
 ls loop-artifacts/T-PR-14-stages/                      # 6 files
 ```
+
+## Q5 追加后的验收（AC 未变，问题集扩展到 Q5）
+| 项 | 要求 | 实现 |
+|---|---|---|
+| Q5.1 路由信号 | 文献是否识别 + 候选四个 | 四行表，逐行给"有/无定理"；**只有错误代价不对称有定理**；点名 Thinkless 的 AIME 负结果 |
+| Q5.2 切换成本 | 是否被量化 | 四类成本表；**总成本被量化、switch cost 本身空白（N7）** |
+| Q5.3 可激发性 | prompt vs 微调 + 撞哪面墙 | 三层表（结构可选/调度需训/机制已在）+ **判决：第四面"调度墙"**（conf 0.55） |
+| Q5.4 三动作映射 | 整理/写SOP/研究推进 | 三行表，每行给"对应搜索概念 + 判定 + 必要条件 + 证据/经典风险" |
+| 交付 | 报告 + 日志 + 阶段文件 | 432 行；日志 9 queries / 7 self_corrections / 8 negatives / 6 stage files |
+| 版本 | 含远端 Q5 追加 | `git pull --rebase origin …` → `c879af4` 之上重放本地提交 |

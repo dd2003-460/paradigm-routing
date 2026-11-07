@@ -18,7 +18,11 @@
       "query": "beam search optimality theorem proven complete not optimal decoder",
       "round": 1,
       "depth": 2,
-      "hits": ["1908.10090 (Stahlberg & Byrne)", "D17-1227 (Huang et al., optimal beam search)", "2010.02650 (Meister et al.)"],
+      "hits": [
+        "1908.10090 (Stahlberg & Byrne)",
+        "D17-1227 (Huang et al., optimal beam search)",
+        "2010.02650 (Meister et al.)"
+      ],
       "note": "首个 query 即命中三篇关键论文。beam search 的教科书定位（not complete / not optimal）与 'exact decoding 暴露模型错误' 的实证同时到手。"
     },
     {
@@ -26,7 +30,11 @@
       "query": "simulated annealing convergence necessary sufficient condition Hajek weak reversibility cooling schedule c d*",
       "round": 2,
       "depth": 3,
-      "hits": ["Hajek 1988 Math. of OR 13(2):311-329", "2208.11444 (SA on TSP average-case runtime)", "Ohlmann & Bean compressed annealing"],
+      "hits": [
+        "Hajek 1988 Math. of OR 13(2):311-329",
+        "2208.11444 (SA on TSP average-case runtime)",
+        "Ohlmann & Bean compressed annealing"
+      ],
       "note": "锁定定理原文口径：T(t)=c/log(1+t) 收敛 ⟺ c ≥ d*（d* = 最深非全局局部极小之深度），需 irreducible + weak reversibility。2208.11444 给出'对数冷却期望上远离最优'的反证。"
     },
     {
@@ -34,7 +42,13 @@
       "query": "Tree of Thoughts RAP MCTS for LLM reasoning reward bound guarantee",
       "round": 3,
       "depth": 2,
-      "hits": ["2305.10601 (ToT, 4%→74% Game of 24)", "2305.14992 (RAP, MDP + MCTS)", "2509.25835 (Chain-in-Tree)", "ReST-MCTS*", "LLaMA-Berry"],
+      "hits": [
+        "2305.10601 (ToT, 4%→74% Game of 24)",
+        "2305.14992 (RAP, MDP + MCTS)",
+        "2509.25835 (Chain-in-Tree)",
+        "ReST-MCTS*",
+        "LLaMA-Berry"
+      ],
       "note": "确认 ToT/RAP 系列只借框架不给界。未命中 'The Illusion of State' 的确定编号 → 列入 negative_results N5，本报告不引用。"
     },
     {
@@ -42,7 +56,11 @@
       "query": "self-consistency sampling plurality vote bound; scaling test-time compute optimally difficulty (Snell)",
       "round": 4,
       "depth": 2,
-      "hits": ["2203.11171 (Self-Consistency, +17.9 GSM8K)", "2408.03314 (Snell et al., >4x)", "2509.25835"],
+      "hits": [
+        "2203.11171 (Self-Consistency, +17.9 GSM8K)",
+        "2408.03314 (Snell et al., >4x)",
+        "2509.25835"
+      ],
       "note": "自一致性有无定理：只有 plurality vote 目标式与经验增益，无最优性定理。Snell 给出 compute-optimal 随难度切换的策略与 >4x 效率差。"
     },
     {
@@ -50,7 +68,10 @@
       "query": "coverage-selection gap best-of-n correlation ceiling effective sample size; LLM reasoning as search survey",
       "round": 5,
       "depth": 3,
-      "hits": ["2606.28661 (coverage-selection gap)", "Large Language Monkeys (仅标题，无 ID，未引用)"],
+      "hits": [
+        "2606.28661 (coverage-selection gap)",
+        "Large Language Monkeys (仅标题，无 ID，未引用)"
+      ],
       "note": "2606.28661 提供本报告全部关键公式：n_eff=n/[1+(n-1)ρ]、n_eff→1/ρ、pass@n ≤ 1-(1-s)^n、π_mode 选择天花板；实测 GSM8K 覆盖 1.00 vs 自一致性 0.87。"
     },
     {
@@ -58,7 +79,12 @@
       "query": "test-time compute complexity theory lower bound LLM reasoning search depth circuit complexity",
       "round": 6,
       "depth": 2,
-      "hits": ["2609.38672 (Provable Test-Time Scaling for Beam Search)", "2602.02909 (BAPO token complexity, Thm 4.1-4.3/5.6-5.8)", "2502.02393 (Lower Bounds for CoT, Thm 4.10)", "2605.19944 (measure-theoretic, 回溯↔Dyck-k)"],
+      "hits": [
+        "2609.38672 (Provable Test-Time Scaling for Beam Search)",
+        "2602.02909 (BAPO token complexity, Thm 4.1-4.3/5.6-5.8)",
+        "2502.02393 (Lower Bounds for CoT, Thm 4.10)",
+        "2605.19944 (measure-theoretic, 回溯↔Dyck-k)"
+      ],
       "note": "本轮最重要的一次检索。2609.38672 是唯一'直指 beam search 且有定理编号'的工作（Thm 1 Ω(C*²) 样本下界、Thm 2/Cor 1 Õ(C*) CF-Beam、Thm 3 regret 下界含 ε_RM）。据此上调 N1 的 conf 上限 0.4→0.55，并把 Q1 判决从'没有定理'修正为'有定理但形状是样本复杂度'。"
     },
     {
@@ -66,8 +92,44 @@
       "query": "latent space search versus token-level search LLM reasoning non-convex optimization comparison",
       "round": 7,
       "depth": 2,
-      "hits": ["2505.13308 (LatentSeek, z*=argmax_z E[R])", "2601.17275 (DLR, GSM8K 55.4 vs GRPO 46.2, 18% forward)", "2604.02029 (latent space survey)", "Coconut 二手数据"],
+      "hits": [
+        "2505.13308 (LatentSeek, z*=argmax_z E[R])",
+        "2601.17275 (DLR, GSM8K 55.4 vs GRPO 46.2, 18% forward)",
+        "2604.02029 (latent space survey)",
+        "Coconut 二手数据"
+      ],
       "note": "补上任务书 Q2 的'核心问'：latent 空间可做梯度（因此 SA/邻域类工具的假设部分成立），token 空间只能采样+剪枝+投票。但没有任何一篇给出'两种空间的界'→ N4 conf 0.45→0.5。"
+    },
+    {
+      "id": "S08",
+      "query": "overthinking reasoning models wasted tokens easy problems adaptive thinking budget quantified unnecessary reflection",
+      "round": 8,
+      "depth": 2,
+      "hits": [
+        "2412.21187 (Do NOT Think That Much for 2+3=?)",
+        "2506.18237 (AdapThink)",
+        "2026.findings-acl.1285 (Do LLMs Overthink Basic Math Reasoning?)",
+        "NoWait (EMNLP 2025, ID 未核)",
+        "SelfBudgeter (ID 未核)",
+        "Anthropic inverse scaling in test-time compute (二手)"
+      ],
+      "note": "Q5 追加后补：overthinking 的量化（1,953% token / 479→4x / 27-51% / 74%）与 'models lack adaptive computation'（O3 三档 effort 全 97%、token +8%）——后者是'预算不是墙'的核心证据。"
+    },
+    {
+      "id": "S09",
+      "query": "Agent Workflow Memory / Dynamic Cheatsheet / ACE playbook SOP induction; Self-Discover prompt-elicited strategy selection; model learns when to think hybrid reasoning",
+      "round": 9,
+      "depth": 2,
+      "hits": [
+        "2510.04618 (ACE)",
+        "2504.07952 (Dynamic Cheatsheet)",
+        "2409.07429 (AWM)",
+        "2402.03620 (Self-Discover)",
+        "2505.13379 (Thinkless)",
+        "2510.07364 (Base Models Know How to Reason, Thinking Models Learn When)",
+        "2507.11423 (strategy follow/prefer/optimize)"
+      ],
+      "note": "Q5.3/Q5.4 的主体。最关键命中 2510.07364：零权重更新、steer 12% token、恢复 91% 差距 ⇒ '机制已在、缺调度' ⇒ 提出第四面'调度墙'。ACE 的 18,282→122 tokens / 66.7%→57.1% 用作'整理过度=剪掉 open list'的机制证据。"
     }
   ],
   "fetches": [],
@@ -102,47 +164,96 @@
       "what": "初稿用'三措辞穷尽'标注 N1，但实际只跑了 S01–S03。",
       "fix": "改为四措辞（增 'provable test-time scaling'），并把 S06 列为第四措辞的检索证据。",
       "trigger": "自查（穷尽性声明必须与实际 query 数一致）"
+    },
+    {
+      "id": "C6",
+      "what": "远端在 c879af4 给任务书追加 Q5（动态适配，四个子问题）时，本地提交已生成但 push 被拒。",
+      "fix": "git pull --rebase（1 local / 1 remote，文件不相交）→ 本地提交重放到 c879af4 之上；随后新增 §9（Q5 全节）、§0 Q5 段、§9.5 实验、§7 源 #22–#30、§8 N7/N8，并更新 6 个阶段文件与日志。",
+      "trigger": "push 被拒 + git log HEAD..origin"
+    },
+    {
+      "id": "C7",
+      "what": "初稿对 Q5.3「撞哪面墙」倾向答'表示墙'。",
+      "fix": "否决：2510.07364 零权重更新恢复 91% 说明机制已在，与'能否被离散语言承载'无关。改为**第四面'调度墙'**，并显式标注为本报告综合（非文献术语），conf 0.55，附可证伪条件（若臂 C ≤ 臂 A 则撤回）。",
+      "trigger": "S09 检索结果 + 自查"
     }
   ],
   "negative_results": [
     {
       "id": "N1",
       "missing": "\"LLM 推理 = 搜索\"的经典最优性/完备性定理",
-      "queries": ["S01", "S02", "S03", "S06"],
+      "queries": [
+        "S01",
+        "S02",
+        "S03",
+        "S06"
+      ],
       "conf_cap": 0.55,
       "note": "有定理但形状是样本复杂度（Ω(C*²)/Õ(C*)/regret 下界），不是最优性。经典最优性仍只在 D17-1227 存在，且限定 modulo beam size。"
     },
     {
       "id": "N2",
       "missing": "把 non-convex landscape 的 SA/restart 理论接到 LLM 推理上的工作",
-      "queries": ["S02", "S04"],
+      "queries": [
+        "S02",
+        "S04"
+      ],
       "conf_cap": 0.4
     },
     {
       "id": "N3",
       "missing": "MCTS regret 界在'无对抗对手'设定下的改写",
-      "queries": ["S02", "S03"],
+      "queries": [
+        "S02",
+        "S03"
+      ],
       "conf_cap": 0.4
     },
     {
       "id": "N4",
       "missing": "latent 搜索 vs token 搜索的同任务同预算对照定理",
-      "queries": ["S05", "S07"],
+      "queries": [
+        "S05",
+        "S07"
+      ],
       "conf_cap": 0.5,
       "note": "两侧各有实证（2505.13308 / 2601.17275），但无统一界。"
     },
     {
       "id": "N5",
       "missing": "\"The Illusion of State\" 的确定 arXiv 编号",
-      "queries": ["S03"],
+      "queries": [
+        "S03"
+      ],
       "conf_cap": null,
       "note": "未核 → 本报告不引用，避免编造 ID。"
     },
     {
       "id": "N6",
       "missing": "MCTS regret 界在'路径相关奖励、无对手'下的重证",
-      "queries": ["S02"],
+      "queries": [
+        "S02"
+      ],
       "conf_cap": 0.4
+    },
+    {
+      "id": "N7",
+      "missing": "「中途换策略」的 switch cost 本身（准确率/token 代价）",
+      "queries": [
+        "S08",
+        "S09"
+      ],
+      "conf_cap": 0.35,
+      "note": "只有'总成本差'（effort 档位 5.8x、token 数）与'去冗余收益'（27-51%、74%），无一篇测切换本身。→ §9.5 实验的核心预测。"
+    },
+    {
+      "id": "N8",
+      "missing": "除'错误代价比'外还有哪个路由信号有定理",
+      "queries": [
+        "S08"
+      ],
+      "conf_cap": 0.45,
+      "note": "答案空间大小/可分解性/唯一解全为经验关联，无形式化；仅 Chow 阈值属经典结论。"
     }
   ],
   "verification_gaps": [
@@ -150,12 +261,22 @@
     "2609.38672 / 2505.13308 / 2605.19944: 搜索返回的 HTML 正文/转述片段，未核对证明",
     "2408.03314: '>4x' 来自二手转述 + 摘要口径，未核定理编号",
     "Coconut (ProsQA 97.0% vs 77.5%; GSM8K 34% vs 43%): 二手博客，标 [待核验] conf 0.6",
-    "Hajek 1988: 定理口径来自二手摘要 + PDF 片段（c ≥ d*、WR、irreducibility），未取得期刊原文页面"
+    "Hajek 1988: 定理口径来自二手摘要 + PDF 片段（c ≥ d*、WR、irreducibility），未取得期刊原文页面",
+    "Q5 段：[待核验] NoWait 27–51%（EMNLP 2025，arXiv ID 未核）、SelfBudgeter 74%/61%（ID 未核）、underthinking 的 ID 未核",
+    "Q5 段：Gemini/Anthropic 定价与 effort 档位为产品文档口径，非论文",
+    "Chow 规则（p*=c_fp/(c_fp+c_fn)）为经典推导，未取原文页（Chow 1970, IEEE Trans. IT）",
+    "2504.07952 / 2409.07429 经 2510.04618 参考文献转引，未独立读原文",
+    "2412.21187 的 1,953% 来自两处二手转述（口径一致），未读原文表"
   ],
   "channel_notes": [
     "loop/prompt-first/01..04.5 与 sop/arena-loop-pipeline.md 在本仓库任何分支仍不存在（第八次确认，ls -R 返回 ABSENT）→ 六阶段按任务书定义执行，产物在 loop-artifacts/T-PR-14-stages/。",
     "note/ 与 pfb/ 目录亦不存在，未冒充已读。",
     "本轮 git pull 需显式指定远端分支（该分支无 upstream tracking），否则 'Already up to date' 但 HEAD 落后。",
     "ar5iv/arxiv HTML 经 web_search 抽取是可行的正文来源；arxiv.org/pdf/ 经 fetch_page 历史四次失败，本轮未使用。"
-  ]
+  ],
+  "scope_change": {
+    "remote_commit": "c879af4",
+    "what": "任务书追加 Q5：动态适配能力（Q5.1 路由信号 / Q5.2 切换成本 / Q5.3 可激发性 / Q5.4 整理·写SOP·研究推进的映射）",
+    "handling": "pull --rebase 后新增报告 §9 全节 + §0 Q5 段 + §9.5 实验 + §7 源 #22–#30 + §8 N7/N8；AC1–AC6 未变，故不改动前八节结论"
+  }
 }
