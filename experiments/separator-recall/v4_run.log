@@ -1,0 +1,242 @@
+  [zh/S0/r0/f0] ✓ '300' ← '300'
+  [zh/S0/r0/f1] ✓ '92.4' ← '92.4'
+  [zh/S0/r0/f2] ✗ '1.1亿' ← '1.1 亿个每平方毫米'
+  [zh/S0/r0/f3] ✓ '42' ← '42'
+  [zh/S0/r0/f4] ✓ '百万分之一' ← '百万分之一'
+[zh/S0/r0] 4/5 = 0.80 (4069 tok)
+  [zh/S0/r1/f0] ✓ '300' ← '300'
+  [zh/S0/r1/f1] ✓ '92.4' ← '92.4'
+  [zh/S0/r1/f2] ✗ '1.1亿' ← '1.1 亿个每平方毫米'
+  [zh/S0/r1/f3] ✓ '42' ← '42'
+  [zh/S0/r1/f4] ✓ '百万分之一' ← '百万分之一'
+[zh/S0/r1] 4/5 = 0.80 (4069 tok)
+  [zh/S0/r2/f0] ✓ '300' ← '300'
+  [zh/S0/r2/f1] ✓ '92.4' ← '92.4'
+  [zh/S0/r2/f2] ✗ '1.1亿' ← '1.1 亿个每平方毫米'
+  [zh/S0/r2/f3] ✓ '42' ← '42'
+  [zh/S0/r2/f4] ✓ '百万分之一' ← '百万分之一'
+[zh/S0/r2] 4/5 = 0.80 (4069 tok)
+  [zh/S1/r0/f0] ✓ '300' ← '300'
+  [zh/S1/r0/f1] ✓ '92.4' ← '92.4'
+  [zh/S1/r0/f2] ✗ '1.1亿' ← '1.1 亿个每平方毫米'
+  [zh/S1/r0/f3] ✓ '42' ← '42'
+  [zh/S1/r0/f4] ✓ '百万分之一' ← '百万分之一'
+[zh/S1/r0] 4/5 = 0.80 (4005 tok)
+  [zh/S1/r1/f0] ✓ '300' ← '300'
+  [zh/S1/r1/f1] ✓ '92.4' ← '92.4'
+  [zh/S1/r1/f2] ✗ '1.1亿' ← '1.1 亿个每平方毫米'
+  [zh/S1/r1/f3] ✓ '42' ← '42'
+  [zh/S1/r1/f4] ✓ '百万分之一' ← '百万分之一'
+[zh/S1/r1] 4/5 = 0.80 (4005 tok)
+  [zh/S1/r2/f0] ✓ '300' ← '300'
+  [zh/S1/r2/f1] ✓ '92.4' ← '92.4'
+  [zh/S1/r2/f2] ✗ '1.1亿' ← '1.1 亿个每平方毫米'
+  [zh/S1/r2/f3] ✓ '42' ← '42'
+  [zh/S1/r2/f4] ✓ '百万分之一' ← '百万分之一'
+[zh/S1/r2] 4/5 = 0.80 (4005 tok)
+  [zh/S2/r0/f0] ✓ '300' ← '300'
+  [zh/S2/r0/f1] ✓ '92.4' ← '92.4'
+  [zh/S2/r0/f2] ✗ '1.1亿' ← '1.1 亿个每平方毫米'
+  [zh/S2/r0/f3] ✓ '42' ← '42'
+  [zh/S2/r0/f4] ✓ '百万分之一' ← '百万分之一'
+[zh/S2/r0] 4/5 = 0.80 (4069 tok)
+  [zh/S2/r1/f0] ✓ '300' ← '300'
+  [zh/S2/r1/f1] ✓ '92.4' ← '92.4'
+  [zh/S2/r1/f2] ✗ '1.1亿' ← '1.1 亿个每平方毫米'
+  [zh/S2/r1/f3] ✓ '42' ← '42'
+  [zh/S2/r1/f4] ✓ '百万分之一' ← '百万分之一'
+[zh/S2/r1] 4/5 = 0.80 (4069 tok)
+  [zh/S2/r2/f0] ✓ '300' ← '300'
+  [zh/S2/r2/f1] ✓ '92.4' ← '92.4'
+  [zh/S2/r2/f2] ✗ '1.1亿' ← '1.1 亿个每平方毫米'
+  [zh/S2/r2/f3] ✓ '42' ← '42'
+  [zh/S2/r2/f4] ✓ '百万分之一' ← '百万分之一'
+[zh/S2/r2] 4/5 = 0.80 (4069 tok)
+  [zh/S3/r0/f0] ✓ '300' ← '300'
+  [zh/S3/r0/f1] ✓ '92.4' ← '92.4'
+  [zh/S3/r0/f2] ✗ '1.1亿' ← '1.1 亿个每平方毫米'
+  [zh/S3/r0/f3] ✓ '42' ← '42'
+  [zh/S3/r0/f4] ✓ '百万分之一' ← '百万分之一'
+[zh/S3/r0] 4/5 = 0.80 (4082 tok)
+  [zh/S3/r1/f0] ✓ '300' ← '300'
+  [zh/S3/r1/f1] ✓ '92.4' ← '92.4'
+  [zh/S3/r1/f2] ✗ '1.1亿' ← '1.1 亿个每平方毫米'
+  [zh/S3/r1/f3] ✓ '42' ← '42'
+  [zh/S3/r1/f4] ✓ '百万分之一' ← '百万分之一'
+[zh/S3/r1] 4/5 = 0.80 (4082 tok)
+  [zh/S3/r2/f0] ✓ '300' ← '300'
+  [zh/S3/r2/f1] ✓ '92.4' ← '92.4'
+  [zh/S3/r2/f2] ✗ '1.1亿' ← '1.1 亿个每平方毫米'
+  [zh/S3/r2/f3] ✓ '42' ← '42'
+  [zh/S3/r2/f4] ✓ '百万分之一' ← '百万分之一'
+[zh/S3/r2] 4/5 = 0.80 (4082 tok)
+  [zh/S4/r0/f0] ✓ '300' ← '300'
+  [zh/S4/r0/f1] ✓ '92.4' ← '92.4'
+  [zh/S4/r0/f2] ✗ '1.1亿' ← '1.1 亿个每平方毫米'
+  [zh/S4/r0/f3] ✓ '42' ← '42'
+  [zh/S4/r0/f4] ✓ '百万分之一' ← '百万分之一'
+[zh/S4/r0] 4/5 = 0.80 (4078 tok)
+  [zh/S4/r1/f0] ✓ '300' ← '300'
+  [zh/S4/r1/f1] ✓ '92.4' ← '92.4'
+  [zh/S4/r1/f2] ✗ '1.1亿' ← '1.1 亿个每平方毫米'
+  [zh/S4/r1/f3] ✓ '42' ← '42'
+  [zh/S4/r1/f4] ✓ '百万分之一' ← '百万分之一'
+[zh/S4/r1] 4/5 = 0.80 (4078 tok)
+  [zh/S4/r2/f0] ✓ '300' ← '300'
+  [zh/S4/r2/f1] ✓ '92.4' ← '92.4'
+  [zh/S4/r2/f2] ✗ '1.1亿' ← '1.1 亿个每平方毫米'
+  [zh/S4/r2/f3] ✓ '42' ← '42'
+  [zh/S4/r2/f4] ✓ '百万分之一' ← '百万分之一'
+[zh/S4/r2] 4/5 = 0.80 (4078 tok)
+  [zh/S5/r0/f0] ✓ '300' ← '300'
+  [zh/S5/r0/f1] ✓ '92.4' ← '92.4'
+  [zh/S5/r0/f2] ✗ '1.1亿' ← '1.1 亿个每平方毫米'
+  [zh/S5/r0/f3] ✓ '42' ← '42'
+  [zh/S5/r0/f4] ✓ '百万分之一' ← '百万分之一'
+[zh/S5/r0] 4/5 = 0.80 (4065 tok)
+  [zh/S5/r1/f0] ✓ '300' ← '300'
+  [zh/S5/r1/f1] ✓ '92.4' ← '92.4'
+  [zh/S5/r1/f2] ✗ '1.1亿' ← '1.1 亿个每平方毫米'
+  [zh/S5/r1/f3] ✓ '42' ← '42'
+  [zh/S5/r1/f4] ✓ '百万分之一' ← '百万分之一'
+[zh/S5/r1] 4/5 = 0.80 (4065 tok)
+  [zh/S5/r2/f0] ✓ '300' ← '300'
+  [zh/S5/r2/f1] ✓ '92.4' ← '92.4'
+  [zh/S5/r2/f2] ✗ '1.1亿' ← '1.1 亿个每平方毫米'
+  [zh/S5/r2/f3] ✓ '42' ← '42'
+  [zh/S5/r2/f4] ✓ '百万分之一' ← '百万分之一'
+[zh/S5/r2] 4/5 = 0.80 (4065 tok)
+  [en/S0/r0/f0] ✗ '300' ← '312 microseconds'
+  [en/S0/r0/f1] ✓ '92.4' ← '92.4'
+  [en/S0/r0/f2] ✓ '110' ← '110'
+  [en/S0/r0/f3] ✓ '42' ← '42'
+  [en/S0/r0/f4] ✓ 'one in a million' ← 'below one in a million'
+[en/S0/r0] 4/5 = 0.80 (4003 tok)
+  [en/S0/r1/f0] ✗ '300' ← '312 microseconds'
+  [en/S0/r1/f1] ✓ '92.4' ← '92.4'
+  [en/S0/r1/f2] ✓ '110' ← '110'
+  [en/S0/r1/f3] ✓ '42' ← '42'
+  [en/S0/r1/f4] ✓ 'one in a million' ← 'below one in a million'
+[en/S0/r1] 4/5 = 0.80 (4003 tok)
+  [en/S0/r2/f0] ✗ '300' ← '312 microseconds'
+  [en/S0/r2/f1] ✓ '92.4' ← '92.4'
+  [en/S0/r2/f2] ✓ '110' ← '110'
+  [en/S0/r2/f3] ✓ '42' ← '42'
+  [en/S0/r2/f4] ✓ 'one in a million' ← 'below one in a million'
+[en/S0/r2] 4/5 = 0.80 (4003 tok)
+  [en/S1/r0/f0] ✓ '300' ← '300 microseconds'
+  [en/S1/r0/f1] ✓ '92.4' ← '92.4'
+  [en/S1/r0/f2] ✓ '110' ← '110'
+  [en/S1/r0/f3] ✓ '42' ← '42'
+  [en/S1/r0/f4] ✓ 'one in a million' ← 'below one in a million'
+[en/S1/r0] 5/5 = 1.00 (4101 tok)
+  [en/S1/r1/f0] ✓ '300' ← '300 microseconds'
+  [en/S1/r1/f1] ✓ '92.4' ← '92.4'
+  [en/S1/r1/f2] ✓ '110' ← '110'
+  [en/S1/r1/f3] ✓ '42' ← '42'
+  [en/S1/r1/f4] ✓ 'one in a million' ← 'below one in a million'
+[en/S1/r1] 5/5 = 1.00 (4101 tok)
+  [en/S1/r2/f0] ✓ '300' ← '300 microseconds'
+  [en/S1/r2/f1] ✓ '92.4' ← '92.4'
+  [en/S1/r2/f2] ✓ '110' ← '110'
+  [en/S1/r2/f3] ✓ '42' ← '42'
+  [en/S1/r2/f4] ✓ 'one in a million' ← 'below one in a million'
+[en/S1/r2] 5/5 = 1.00 (4101 tok)
+  [en/S2/r0/f0] ✗ '300' ← '312 microseconds'
+  [en/S2/r0/f1] ✓ '92.4' ← '92.4'
+  [en/S2/r0/f2] ✓ '110' ← '110'
+  [en/S2/r0/f3] ✓ '42' ← '42'
+  [en/S2/r0/f4] ✓ 'one in a million' ← 'below one in a million'
+[en/S2/r0] 4/5 = 0.80 (4003 tok)
+  [en/S2/r1/f0] ✗ '300' ← '312 microseconds'
+  [en/S2/r1/f1] ✓ '92.4' ← '92.4'
+  [en/S2/r1/f2] ✓ '110' ← '110'
+  [en/S2/r1/f3] ✓ '42' ← '42'
+  [en/S2/r1/f4] ✓ 'one in a million' ← 'below one in a million'
+[en/S2/r1] 4/5 = 0.80 (4003 tok)
+  [en/S2/r2/f0] ✗ '300' ← '312 microseconds'
+  [en/S2/r2/f1] ✓ '92.4' ← '92.4'
+  [en/S2/r2/f2] ✓ '110' ← '110'
+  [en/S2/r2/f3] ✓ '42' ← '42'
+  [en/S2/r2/f4] ✓ 'one in a million' ← 'below one in a million'
+[en/S2/r2] 4/5 = 0.80 (4003 tok)
+  [en/S3/r0/f0] ✗ '300' ← '312'
+  [en/S3/r0/f1] ✓ '92.4' ← '92.4'
+  [en/S3/r0/f2] ✓ '110' ← '110'
+  [en/S3/r0/f3] ✓ '42' ← '42'
+  [en/S3/r0/f4] ✓ 'one in a million' ← 'below one in a million'
+[en/S3/r0] 4/5 = 0.80 (4089 tok)
+  [en/S3/r1/f0] ✗ '300' ← '312'
+  [en/S3/r1/f1] ✓ '92.4' ← '92.4'
+  [en/S3/r1/f2] ✓ '110' ← '110'
+  [en/S3/r1/f3] ✓ '42' ← '42'
+  [en/S3/r1/f4] ✓ 'one in a million' ← 'below one in a million'
+[en/S3/r1] 4/5 = 0.80 (4089 tok)
+  [en/S3/r2/f0] ✗ '300' ← '312'
+  [en/S3/r2/f1] ✓ '92.4' ← '92.4'
+  [en/S3/r2/f2] ✓ '110' ← '110'
+  [en/S3/r2/f3] ✓ '42' ← '42'
+  [en/S3/r2/f4] ✓ 'one in a million' ← 'below one in a million'
+[en/S3/r2] 4/5 = 0.80 (4089 tok)
+  [en/S4/r0/f0] ✓ '300' ← '300 microseconds'
+  [en/S4/r0/f1] ✓ '92.4' ← '92.4'
+  [en/S4/r0/f2] ✓ '110' ← '110'
+  [en/S4/r0/f3] ✓ '42' ← '42'
+  [en/S4/r0/f4] ✓ 'one in a million' ← 'below one in a million'
+[en/S4/r0] 5/5 = 1.00 (4042 tok)
+  [en/S4/r1/f0] ✓ '300' ← '300 microseconds'
+  [en/S4/r1/f1] ✓ '92.4' ← '92.4'
+  [en/S4/r1/f2] ✓ '110' ← '110'
+  [en/S4/r1/f3] ✓ '42' ← '42'
+  [en/S4/r1/f4] ✓ 'one in a million' ← 'below one in a million'
+[en/S4/r1] 5/5 = 1.00 (4042 tok)
+  [en/S4/r2/f0] ✓ '300' ← '300 microseconds'
+  [en/S4/r2/f1] ✓ '92.4' ← '92.4'
+  [en/S4/r2/f2] ✓ '110' ← '110'
+  [en/S4/r2/f3] ✓ '42' ← '42'
+  [en/S4/r2/f4] ✓ 'one in a million' ← 'below one in a million'
+[en/S4/r2] 5/5 = 1.00 (4042 tok)
+  [en/S5/r0/f0] ✓ '300' ← '300'
+  [en/S5/r0/f1] ✓ '92.4' ← '92.4'
+  [en/S5/r0/f2] ✓ '110' ← '110'
+  [en/S5/r0/f3] ✓ '42' ← '42'
+  [en/S5/r0/f4] ✓ 'one in a million' ← 'below one in a million'
+[en/S5/r0] 5/5 = 1.00 (4024 tok)
+  [en/S5/r1/f0] ✓ '300' ← '300'
+  [en/S5/r1/f1] ✓ '92.4' ← '92.4'
+  [en/S5/r1/f2] ✓ '110' ← '110'
+  [en/S5/r1/f3] ✓ '42' ← '42'
+  [en/S5/r1/f4] ✓ 'one in a million' ← 'below one in a million'
+[en/S5/r1] 5/5 = 1.00 (4024 tok)
+  [en/S5/r2/f0] ✓ '300' ← '300'
+  [en/S5/r2/f1] ✓ '92.4' ← '92.4'
+  [en/S5/r2/f2] ✓ '110' ← '110'
+  [en/S5/r2/f3] ✓ '42' ← '42'
+  [en/S5/r2/f4] ✓ 'one in a million' ← 'below one in a million'
+[en/S5/r2] 5/5 = 1.00 (4024 tok)
+
+Saved 36 records to /Users/a1-6/Desktop/workspace/paradigm-routing/experiments/separator-recall/results_v4.jsonl
+
+=== SUMMARY ===
+Lang  Cond  Tok     Mean Acc  
+en    S0    4003    0.800     
+en    S1    4101    1.000     
+en    S2    4003    0.800     
+en    S3    4089    0.800     
+en    S4    4042    1.000     
+en    S5    4024    1.000     
+zh    S0    4069    0.800     
+zh    S1    4005    0.800     
+zh    S2    4069    0.800     
+zh    S3    4082    0.800     
+zh    S4    4078    0.800     
+zh    S5    4065    0.800     
+
+=== ORDER ANALYSIS (per language) ===
+en: S0=0.80 | best=S1@1.00 worst=S2@0.80
+     Δ_presence=+0.20  Δ_character=+0.20  ratio=1.00
+     → char effect NOT negligible here
+zh: S0=0.80 | best=S1@0.80 worst=S1@0.80
+     Δ_presence=+0.00  Δ_character=+0.00  ratio=inf
+     → no first-order effect in this lang; ratio not interpretable
+EXIT=0
