@@ -1,0 +1,63 @@
+{
+  "task": "T-PR-13",
+  "title": "核心推理能力的激活机制（校准-对齐约束 / 语言带宽 / prompt 杠杆失效边界）",
+  "date": "2026-11-08",
+  "branch": "arena/62fe3fd4-paradigm-routing",
+  "anchor": "和 persona 要求的一些蒸馏结果有关吗，还是发散思考激活（怎么激活的!）……没办法切纠缠就研究怎么激活这些核心推理能力吧!",
+  "queries": [
+    {"id": "S01", "query": "RLHF alignment tuning breaks LLM calibration internal confidence verbalized overconfidence", "round": 1, "depth": 3,
+     "hits": ["2410.09724", "2502.11028", "2404.09127", "2503.02623", "2511.04869", "2305.14975", "2601.13284"],
+     "note": "一轮命中 H1 的全部关键对象；同时暴露三层不同步（verbalized 反而更好）"},
+    {"id": "S01b", "query": "Does Alignment Tuning Really Break LLMs Internal Confidence", "round": 2, "depth": 2,
+     "hits": ["2409.00352"], "note": "任务书预置起点，abs/ 核实：四维度、严格条件下一致损害 → 三层约定来源"},
+    {"id": "S01c", "query": "Calibration Collapse Under Sycophancy Fine-Tuning reward hacking", "round": 2, "depth": 2,
+     "hits": ["2604.10585"], "note": "任务书预置起点，abs/ 核实：ECE +0.006 / p=0.41 → 效应量校正"},
+    {"id": "S02", "query": "personas system prompts do not improve LLM performance rigorous evaluation", "round": 1, "depth": 3,
+     "hits": ["2311.10054", "2605.29420"],
+     "note": "162 角色 × 2410 题 × 4 族；最优角色选择≈随机 → persona 零效应"},
+    {"id": "S03", "query": "chain-of-thought reasoning hurts performance where deliberation makes humans worse 36.3 percentage points", "round": 2, "depth": 3,
+     "hits": ["2410.21333"], "note": "用精确数字定位一手论文（前一轮泛词只返回博客）"},
+    {"id": "S04", "query": "large language models cannot self-correct reasoning yet intrinsic self-correction fails", "round": 2, "depth": 3,
+     "hits": ["2310.01798", "2405.14092"], "note": "负结果 + 唯一把符号翻正的对照（掩码条件重建）"},
+    {"id": "S05", "query": "calibration training hurts alignment refusal helpfulness downstream tradeoff measure", "round": 3, "depth": 2,
+     "hits": ["2510.17426", "2512.06922"], "note": "H2 第 1 措辞：未找到『训练校准→测 refusal』；但命中 Pareto 论文及其安全护栏自陈"},
+    {"id": "S06", "query": "alignment tax non-identifiability formal calibration alignment multi-objective", "round": 3, "depth": 2,
+     "hits": [], "note": "H2 第 2 措辞 + H3 联合形式化：空 → N2"},
+    {"id": "S07", "query": "calibration-aware fine-tuning degrades refusal rate safety benchmark", "round": 4, "depth": 2,
+     "hits": [], "note": "H2 第 3 措辞：空 → H2『无人测过』的三措辞穷尽记录完成"},
+    {"id": "S08", "query": "LLM reasoning style similarity to specific human author stylometric authorship attribution generated rationales", "round": 4, "depth": 2,
+     "hits": ["2603.23219", "2025.findings-emnlp.532", "2512.06922"],
+     "note": "Q3c：直接研究不存在；拿到可复用的 AA/AV/style-match 范式与数字"}
+  ],
+  "fetches": [
+    {"id": "F01", "url": "https://arxiv.org/abs/2409.00352", "ok": true, "used_for": "三层校准约定；『初看非 trade-off，严格条件下一致损害』"},
+    {"id": "F02", "url": "https://arxiv.org/abs/2604.10585", "ok": true, "used_for": "单变量受控：ECE +0.006 / MCE +0.010 / p=0.41 / 缩放后 0.042 vs 0.037"}
+  ],
+  "self_corrections": [
+    {"id": "C1", "what": "初稿把 H1 直接判『成立』，用博客级叙事（confidence is a liar）作依据",
+     "fix": "改为『部分成立 + 三层拆（logit/verbalized/行为）』，并补 2305.14975 的反向结果（verbalized ECE 相对 −50%）与 2604.10585 的 p=0.41 效应量校正",
+     "trigger": "任务书要求逐条核验不得整体打包；且发现同一现象在两层符号相反"},
+    {"id": "C2", "what": "初稿把 Q3b 写成『撞 T-PR-12 的双墙』即止",
+     "fix": "发现 2410.21333 的任务极短（容量与跨度均不构成约束）却仍掉 36.3 → 追加第三面墙（表示墙），并把公式改为 min(容量, 跨度, 表示)",
+     "trigger": "反证类存在，双约束无法解释"},
+    {"id": "C3", "what": "初稿用『Kolmogorov 复杂度爆炸』论证 H4'",
+     "fix": "全部删除定量断言，改为操作定义：同一能力在语言化/非语言化接口下的准确率差（0.61 → 0.32）；自我质询 2 记录该批评",
+     "trigger": "用压缩定义压缩是循环；T-PR-09 已有同类错误教训"},
+    {"id": "C4", "what": "初稿把 69.1–81.9% 风格匹配率当作 Q3c 的数值预期",
+     "fix": "改标为『范式可行性参照』，并在 §4.3 显式写出文风 vs 思路结构的错配；判据改用相对比较以规避标签体系效度问题",
+     "trigger": "自我质询 3 指出 proxy 效度不足"}
+  ],
+  "negative_results": [
+    {"id": "N1", "missing": "H2 对称方向（训练校准→测 refusal/helpfulness/safety）", "queries": ["S05", "S06", "S07"], "conf_cap": 0.35},
+    {"id": "N2", "missing": "calibration × alignment 联合优化目标/博弈的形式化", "queries": ["S06"], "conf_cap": 0.4},
+    {"id": "N3", "missing": "推理动程序列与特定人类作者的相似度测量", "queries": ["S08"], "conf_cap": 0.4},
+    {"id": "N4", "missing": "除 2410.21333 外的按概念类型分层 prompt 保真度数据", "queries": ["S03"], "conf_cap": 0.45},
+    {"id": "N5", "missing": "『表示墙』的独立命名/直接研究（本报告的综合概念）", "queries": ["S03", "S06"], "conf_cap": 0.4}
+  ],
+  "channel_notes": [
+    "abs/ 2/2 成功；web_search 6 次、10 条 query 全部返回可用结果，0 空命中 —— 与 T-PR-11/12 相反，因主题是热门词，须用精确数字（36.3）定位一手论文",
+    "loop/prompt-first/* 第七次缺失；sop/arena-loop-pipeline.md 缺失",
+    "note/compression-unified-view-2026-11-07.md 不存在；pfb/ 目录不存在",
+    "pfb S8A（persona-auditor 无效）只能按任务书转述引用，未核一手记录"
+  ]
+}
