@@ -69,14 +69,43 @@ A1 (placebo: 内容是机制不是 token) + C1 (role token 是弱标签)
     ↓ 推到多轮
 B1 (attention closes: 衰减机制) + B2/B3 (工程/内生解法)
     ↓ 推到无 query
-D1-D5 (全是 task-directed → gap) + 我们的 proactive-detection (no-query, 2.6/3)
+D1-D5 (task-directed) + F1-F3 (proactive 但短输入/特定场景) + 我们的 proactive-detection (no-query, long-context, 2.6/3)
     ↓ 下一步
-推长度到 16k-32k 看衰减曲线 + 更隐蔽 hook + 中性任务
+推长度到 16k-32k 看衰减曲线 + 更隐蔽 hook + 中性任务 + 对标 MMPCBench/PCBench 做长文版
 ```
+
+## F. Proactive detection（部分命中 — 修正 §D 的 gap 结论）
+
+> 2026-11-07 补充：追加搜索后发现"完全没人做 no-query detection"这个说法过强。以下工作做了"无需额外提示、模型自主发现问题"，但各有局限。
+
+| ID | 标题 | arXiv/Venue | 核心设计 | 与我们的差异 | 判定 |
+|----|------|------------|---------|-------------|------|
+| F1 | **MMPCBench**: Benchmarking MLLMs on Proactive Critique of Flawed Inputs | 2608.29286 / EMNLP 2026 Findings | 定义 "Proactive Critique" = 模型自主识别/分析/修复有缺陷的用户输入，**无需额外提示**。4 类错误 × 12 子类（含跨模态矛盾、缺失视觉前提）。层级评估：detection → diagnosis → resolution。14 个 MLLM。关键发现："consistency gap"——推理模型在内部 reasoning 中正确识别了错误，但在最终输出中压制了这些洞察以优先满足指令合规。 | ① 多模态（MLLM），我们是纯文本；② 输入是"有缺陷的用户请求"（短），我们是"埋在长文档里的信息"（~2.5k token）；③ 他们测的是"用户输入有错→模型要不要指出"，我们测的是"文档中有异常→模型做开放任务时会不会自发提及"；④ 他们的"proactive"是相对于"不检测就忽略"，但任务框架仍是"处理这个输入"而非"基于材料给分析" | **部分命中**：proactive 概念最接近，但场景不同（短输入 vs 长文档、多模态 vs 纯文本、缺陷请求 vs 埋点信息） |
+| F2 | **PCBench**: Premise Critique Ability of LLMs | 2505.23715 | 定义 "Premise Critique Ability" = 主动识别和表述输入前提中的错误。4 类错误 × 3 难度级别。系统评估多个 LLM。 | ① 输入是"有缺陷的前提/问题"（短），不是长文档；② 任务框架是"回答这个问题"（隐含要检查前提），比我们的"请基于材料给出分析"更接近 task-directed；③ 没有长上下文维度 | **部分命中**：proactive 概念一致，但输入规模和任务框架不同 |
+| F3 | Behavioral Analysis of Information Salience in LLMs | 2502.14613 / ACL 2025 Findings | 用 length-controlled summarization 作为行为探针，推导 LLM 内部的信息显著性（salience）排序。13 个模型 × 4 数据集。发现：LLM 有精细的层级 salience 概念，跨模型族一致。 | ① 不是"检测异常"而是"选择重要信息"（summarization）；② 没有 planted anomaly/hook 的设计；③ 测的是"什么被选中"而非"什么被注意到" | **未命中**：相关但不同问题（salience ranking ≠ anomaly detection） |
+
+### 修正后的 gap 结论
+
+**原结论（§D）**："学界基本空白，没有一篇做 no-query 主动觉察" → **过强**
+
+**修正结论**：
+- "Proactive detection/critique" 作为一个概念**已被提出和测量**（F1 MMPCBench、F2 PCBench），但都限定在**短输入 + 明确缺陷**的场景
+- **真正的 gap 缩小为**：在**长上下文（>1k token）+ 开放式任务 + 无明确缺陷信号**的条件下，模型能否自发检测并报告埋点信息（矛盾/约束/反直觉数字）。具体来说：
+  - F1/F2 的输入是"这个请求本身有错"——错误是输入的**主要特征**
+  - 我们的输入是"一份正常报告里埋了 3 个钩子"——异常是**次要特征**，淹没在正常内容中
+  - F1/F2 的任务是"处理这个输入"（隐含检查），我们的任务是"基于材料给出分析和建议"（不隐含检查）
+  - 没有人把这两个维度组合起来：**长文档 × 开放式任务 × 埋点异常 × 自发检测**
+- 置信度从 0.85 降到 **0.70**——gap 存在但更窄，论文定位应从 "first to test no-query detection" 改为 "first to test no-query detection in long-context open-ended settings"，related work 必须引 F1/F2 并说明区别
+
+### 对我们的实验设计的启示
+
+1. **MMPCBench 的 "consistency gap" 发现直接相关**：模型在 reasoning 中发现了错误但输出时压制了——这暗示我们的 proactive-detection 实验如果加一个 CoT 变体（让模型先写分析再给结论），可能看到"reasoning 中提到但结论中不提"的模式
+2. **对标策略**：论文 related work 节应引 F1+F2，定位是"将 proactive critique 从短输入缺陷检测扩展到长文档开放式阅读"
+3. **实验扩展**：加一个条件——在 prompt 中加一句"如果材料中有值得注意的问题，请指出"（半 no-query），看 2.6/3 能提到多少。这能区分"模型没注意到"vs"注意到了但觉得不该说"（= consistency gap 的文本版）
 
 ## 待核验 / 边界
 
 - [待核验] B2 的 arXiv ID：2610.00958 页面标注"This submission was made in error... instead of a new version for arXiv:2512.06869"——正式引用应查 2512.06869
 - [待核验] 27B 模型的 context window 上限（我们假设 32k，未验证）——影响"推到 16k-32k"的实验设计
-- 追到边界：no-query proactive detection 的 gap 是真的（搜了 8 组关键词、跨 ACL/EMNLP/ICLR/arXiv），但"没人做"≠"没人正在做"——可能有 preprint 未公开。置信度 0.85。
+- 追到边界（修正）：no-query proactive detection 的 gap **存在但比最初判断的窄**。MMPCBench (2608.29286) 和 PCBench (2505.23715) 做了"proactive critique without extra prompts"，但限定在短输入+明确缺陷。真正的 gap 是"长文档 × 开放式任务 × 埋点异常 × 自发检测"这个组合。置信度 0.70。Arena 对抗性核验（T-PR-06）待登录后派发，可能进一步收窄或推翻。
 - A1 的 placebo 设计（乱序 heading）比我们的 S2/S3（裸分隔符）更强——他们证明了"结构形式本身不够，得是真语义"，我们证明了"带标签 vs 不带标签有差异"。两者合起来 = 标签必须携带正确语义才有用。
