@@ -56,9 +56,10 @@
 
 | 优先级 | 动作 | 产投比 | 理由 |
 |--------|------|--------|------|
-| 1 | 路径 B 扩展实验（v4-multi-char） | 高 | 黑盒可跑、复用 v3 pipeline、直接回答"二阶是否可忽略"、产出可发 |
+| ~~1~~ | ~~路径 B 扩展实验（v4-multi-char）~~ | — | **已完成 (2026-11-07, commit 26ecfa7)**。结果：字符选择假设被推翻，真正的一阶变量是"边界是否带话题标签"。见 `experiments/separator-recall/RESULTS_V4.md` |
 | 2 | 路径 A 的简化版：如果 ninfer 暴露 logits/hidden states，提取 sink 位置统计 | 中 | 一个数字（cosine sim）就能定性回答，但依赖 API 能力 |
 | 3 | 路径 C 的形式化 | 低（短期） | 留作论文 theoretical motivation，不急 |
+| 4 (new) | "labeled but unfamiliar" 条件（如 `@@@ Topic`）分离 label-semantics vs token-familiarity | 高 | v4 的 `[SEP]` 无效可能混淆了"无标签"和"token 生僻"——加一个生僻但带标签的条件就能拆开 |
 
 ## 关键引用（已验证标题+摘要）
 
