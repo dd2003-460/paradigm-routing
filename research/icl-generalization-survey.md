@@ -1,6 +1,7 @@
 # ICL 与泛化机制调研
 
 > origin: ai | 2026-11-07 | 触发：成璐提出"后验经验/ICL 才是泛化的真正路径，不自信时事事验证链可完全泛化但开销大"——本地无专门调研（仅 hierarchy-noquery-survey §G 涉及先验纠缠），确认缺口后外查。
+> ⚠️ 2026-11-07 关联更新：T-PR-06 arena 对抗核验报告已落盘（`noquery-gap-adversarial-check.md`），其中 ConInstruct/FIND 等发现直接影响本调研 D 节验证链实验的定位——措辞梯度（T0/T1/T2）应优先于 familiarity 2×2 执行。
 
 ## 一句话结论
 

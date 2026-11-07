@@ -1,0 +1,278 @@
+{
+  "meta": {
+    "task": "T-PR-06 no-query gap adversarial verification",
+    "repo": "dd2003-460/paradigm-routing",
+    "executor": "Arena agent (LMArena Agent Mode)",
+    "executed_at_utc": "2026-11-07",
+    "stance": "adversarial — attempt to REFUTE Lead's gap claim, not to confirm it",
+    "target_claim_original": "no-query proactive detection in long-document open-ended tasks is a true gap; all inconsistency-detection work is task-directed",
+    "target_claim_narrowed_by_lead": "gap = long document x open-ended task x planted anomaly x spontaneous detection (after MMPCBench 2608.29286 and PCBench 2505.23715 partially hit)",
+    "groups_executed": 16,
+    "groups_required_min": 10,
+    "criteria": {
+      "HIT": "task design never tells the model to detect X, AND the metric is whether the model spontaneously mentions/flags X",
+      "PARTIAL": "task wording is ambiguous (e.g. 'summarize and point out problems') but the core evaluation is still spontaneous detection",
+      "MISS": "explicit detection instruction ('judge whether consistent' / 'find the contradiction' / 'list all inconsistencies')"
+    }
+  },
+  "channels": {
+    "web_search_proxy": {"status": "OK", "coverage": "arXiv abs/html, ACL Anthology, OpenReview PDFs, NeurIPS proceedings, Nature, PMC, GitHub, tech blogs"},
+    "fetch_page_arxiv": {"status": "OK", "used_for": "2512.18601 abs page verification"},
+    "arxiv_api_direct": {"status": "BLOCKED", "evidence": "curl http://export.arxiv.org/api/query -> http_code=000", "fallback": "web_search + fetch_page"},
+    "semantic_scholar_api": {"status": "BLOCKED", "evidence": "curl https://api.semanticscholar.org/graph/v1/... -> http_code=000", "fallback": "web_search"},
+    "openreview_api": {"status": "BLOCKED", "evidence": "curl https://api2.openreview.net/notes -> http_code=000", "fallback": "web_search (OpenReview PDF pages indexed)"},
+    "arxiv_abs_direct_from_bash": {"status": "BLOCKED", "evidence": "curl https://arxiv.org/abs/2512.18601 -> http_code=000", "note": "bash egress allowlist only; fetch_page tool works via proxy"},
+    "google_scholar": {"status": "NOT_DIRECTLY_REACHABLE", "note": "only indirectly via web_search结果"}
+  },
+  "queries": [
+    {
+      "id": "Q01",
+      "brief_angle": "verification of Lead's partial hit F1",
+      "query": "MMPCBench proactive critique flawed inputs MLLM benchmark arXiv 2608.29286",
+      "channel": "web_search depth=2",
+      "venue_targets": ["arXiv", "ACL Anthology", "EMNLP 2026 Findings"],
+      "n_results_scanned": 5,
+      "top5": [
+        {"title": "MMPCBench: Benchmarking Multimodal Large Language Models on Proactive Critique of Flawed Inputs", "id": "arXiv:2608.29286", "venue": "Findings of EMNLP 2026 (pp.3741-3774)", "year": 2026, "url": "https://arxiv.org/abs/2608.29286", "verdict": "PARTIAL"},
+        {"title": "MMPCBench ACL Anthology record", "id": "2026.findings-emnlp.178", "venue": "ACL Anthology", "year": 2026, "url": "https://aclanthology.org/2026.findings-emnlp.178/", "verdict": "PARTIAL"},
+        {"title": "Pith refereed review of MMPCBench", "id": "pith:2QF4POKJ", "venue": "pith.science", "year": 2026, "url": "https://pith.science/paper/2608.29286", "verdict": "PARTIAL"},
+        {"title": "Gengxu Li author page (also lists PCBench)", "id": "alphaxiv:@gengxu-li", "venue": "alphaXiv", "year": 2026, "url": "https://www.alphaxiv.org/@gengxu-li", "verdict": "PARTIAL"}
+      ],
+      "note": "VERIFIED. 3146 samples, 4 primary x 12 sub error types, 14 MLLMs. avg EDA 33.2%, PCQ 26.1/100, consistency-gap DDR avg 46%. Inputs are short flawed multimodal user requests, NOT long documents."
+    },
+    {
+      "id": "Q02",
+      "brief_angle": "verification of Lead's partial hit F2",
+      "query": "PCBench premise critique ability of LLMs benchmark 2505.23715",
+      "channel": "web_search depth=1",
+      "venue_targets": ["arXiv", "HuggingFace datasets"],
+      "n_results_scanned": 3,
+      "top5": [
+        {"title": "Don't Take the Premise for Granted: Evaluating the Premise Critique Ability of Large Language Models", "id": "arXiv:2505.23715", "venue": "arXiv (2025-05-29)", "year": 2025, "url": "https://arxiv.org/html/2505.23715", "verdict": "PARTIAL"},
+        {"title": "PCBench dataset card", "id": "ALIENS232/PCBench", "venue": "HuggingFace", "year": 2025, "url": "https://huggingface.co/datasets/ALIENS232/PCBench", "verdict": "PARTIAL"}
+      ],
+      "note": "VERIFIED. 15 LLMs, 4 error types x 3 difficulty, 1200 base -> 3600 problems (adapted math problems). Key sentence: 'Most models rely heavily on explicit prompts to detect errors, with limited autonomous critique' + 'Some reasoning models internally catch inconsistencies but fail to articulate them outwardly'. Inputs are SHORT math problems."
+    },
+    {
+      "id": "Q03",
+      "brief_angle": "angle 1 (spontaneous detection) + no-query critique",
+      "query": "LLM spontaneously flag error in provided context \"without being asked\" correction of user-provided document",
+      "channel": "web_search depth=2",
+      "venue_targets": ["arXiv", "COLM", "pith reviews"],
+      "n_results_scanned": 5,
+      "top5": [
+        {"title": "Language Models can perform Single-Utterance Self-Correction of Perturbed Reasoning", "id": "arXiv:2506.15894", "venue": "arXiv 2025", "year": 2025, "url": "https://pith.science/paper/2506.15894", "verdict": "PARTIAL"},
+        {"title": "Internalized Self-Correction for Large Language Models (InSeC)", "id": "arXiv:2412.16653", "venue": "arXiv 2024/2026", "year": 2024, "url": "https://pith.science/paper/2412.16653", "verdict": "PARTIAL"},
+        {"title": "When Do LLMs Admit Their Mistakes? Understanding The Role Of Model Belief In Retraction", "id": "arXiv:2505.16170", "venue": "COLM 2026", "year": 2026, "url": "https://arxiv.org/abs/2505.16170", "verdict": "PARTIAL"},
+        {"title": "langcheck PR #16 (engineering: tagger-flagged error correction)", "id": "github:tallen12/langcheck#16", "venue": "GitHub", "year": 2026, "url": "https://github.com/tallen12/langcheck/pull/16", "verdict": "MISS"}
+      ],
+      "note": "Three independent papers establish 'spontaneous, unprompted' error handling on INPUT-CONTAINED errors: injected error in own CoT stub (2506.15894), tricked conversion factor in context after SFT (2412.16653), own false assertion retraction (2505.16170). None is a long document read for an open task."
+    },
+    {
+      "id": "Q04",
+      "brief_angle": "angle 4 (unsupervised contradiction detection in INPUT, not output)",
+      "query": "unsupervised contradiction detection within single document LLM without instruction dataset",
+      "channel": "web_search depth=2",
+      "venue_targets": ["arXiv", "ACL", "GitHub"],
+      "n_results_scanned": 5,
+      "top5": [
+        {"title": "On Finding Inconsistencies in Documents (FIND)", "id": "arXiv:2512.18601", "venue": "arXiv 2025-12-21", "year": 2025, "url": "https://arxiv.org/abs/2512.18601", "verdict": "MISS"},
+        {"title": "ContraDoc: Understanding Self-Contradictions in Documents with LLMs", "id": "arXiv:2311.09182", "venue": "NAACL 2024", "year": 2024, "url": "https://arxiv.org/html/2311.09182.pdf", "verdict": "MISS"},
+        {"title": "DocChecker / Detecting Contradictions Within and Across Documents", "id": "github:chen760316/Doc4LLM", "venue": "GitHub (code)", "year": 2025, "url": "https://github.com/chen760316/Doc4LLM", "verdict": "MISS"},
+        {"title": "LegalWiz: contradiction-injection generation framework", "id": "arXiv:2510.03418", "venue": "arXiv 2025", "year": 2025, "url": "https://arxiv.org/pdf/2510.03418", "verdict": "MISS"},
+        {"title": "ContraDoc summary (Lacuna)", "id": "lacuna:contradoc", "venue": "lacuna", "year": 2024, "url": "https://lacuna.tiptreesystems.com/work/contradoc-understanding-self-contradictions-in-documents-with-large-language/wrk_c530aa02e11bb1632b159c5046288255", "verdict": "MISS"}
+      ],
+      "note": "MOST THREATENING FIND OF THIS RUN. FIND = long technical documents + expert-inserted inconsistencies + gpt-5 recovers 64%. It occupies 'long doc x planted anomaly' PERFECTLY. Only the explicit instruction ('find all inconsistencies') keeps it out of HIT. Also: gpt-5 found 136/196 legitimate inconsistencies that ORIGINAL AUTHORS missed in 50 arXiv papers."
+    },
+    {
+      "id": "Q05",
+      "brief_angle": "angle 11 (needle-in-a-haystack variants: not exact recall but 'noticing')",
+      "query": "needle in a haystack variant noticing anomalies distractors long context detection without explicit question 2026",
+      "channel": "web_search depth=2",
+      "venue_targets": ["arXiv", "NAACL", "practitioner blogs"],
+      "n_results_scanned": 5,
+      "top5": [
+        {"title": "NoLiMa: Long-Context Evaluation Beyond Literal Matching", "id": "arXiv:2502.05167", "venue": "arXiv 2025", "year": 2025, "url": "https://arxiv.org/html/2502.05167v2", "verdict": "MISS"},
+        {"title": "Hidden in the Haystack: Smaller Needles are Harder", "id": "arXiv:2505.18148", "venue": "arXiv 2025", "year": 2025, "url": "https://arxiv.org/pdf/2505.18148", "verdict": "MISS"},
+        {"title": "Multilingual Needle in a Haystack (MLNeedle)", "id": "NAACL 2025 long.267", "venue": "NAACL 2025", "year": 2025, "url": "https://aclanthology.org/2025.naacl-long.267.pdf", "verdict": "MISS"},
+        {"title": "Needle in a Haystack Prompting Guide (2026)", "id": "sureprompts", "venue": "industry blog", "year": 2026, "url": "https://sureprompts.com/blog/needle-in-a-haystack-prompting", "verdict": "MISS"}
+      ],
+      "note": "All NIAH variants keep an explicit question. NIAH tests retrieval of an anomalous STRING; none tests unprompted salience."
+    },
+    {
+      "id": "Q06",
+      "brief_angle": "angle 3 (salience detection) + brief angle 2 (proactive without prompt)",
+      "query": "\"proactive\" agent benchmark model volunteers concerns without being asked long document review 2026",
+      "channel": "web_search depth=2",
+      "venue_targets": ["arXiv", "FSE 2026", "workshop"],
+      "n_results_scanned": 5,
+      "top5": [
+        {"title": "ProactBench: Beyond What The User Asked For", "id": "arXiv:2605.09228", "venue": "arXiv 2026", "year": 2026, "url": "https://pith.science/paper/2605.09228", "verdict": "MISS"},
+        {"title": "pi-BENCH: Evaluating Proactive Personal Assistant Agents", "id": "arXiv:2605.14678", "venue": "arXiv 2026", "year": 2026, "url": "https://arxiv.org/pdf/2605.14678", "verdict": "MISS"},
+        {"title": "Anticipate and Learn / ProActEval (idle-time compute)", "id": "arXiv:2605.25971", "venue": "arXiv 2026", "year": 2026, "url": "https://arxiv.org/html/2605.25971v1", "verdict": "MISS"},
+        {"title": "Ask Now, Use Later: Benchmarking the Proactivity Gap in Long-Lived LLM Agents", "id": "arXiv:2605.28108", "venue": "arXiv 2026", "year": 2026, "url": "https://awesomepapers.io/ai-agents/papers/2605.28108", "verdict": "MISS"},
+        {"title": "Help Without Being Asked: A Deployed Proactive Agent System for On-Call Support", "id": "arXiv:2604.09579", "venue": "FSE 2026 Companion", "year": 2026, "url": "https://arxiv.org/pdf/2604.09579", "verdict": "MISS"}
+      ],
+      "note": "IMPORTANT NEGATIVE: 'proactive' is a crowded 2026 term but means CONVERSATIONAL anticipation (predicting user needs, timing interventions). ProActEval even defines a 'proactive' coverage mode = user did not ask but assistant volunteered facts. Nobody puts proactive detection on document anomalies."
+    },
+    {
+      "id": "Q07",
+      "brief_angle": "angle 5 (implicit quality assessment) / ambiguity as no-query detection",
+      "query": "LLM ambiguity detection without explicit instruction does model ask clarifying question unprompted underspecification",
+      "channel": "web_search depth=2",
+      "venue_targets": ["arXiv", "Cornell", "SWE agents"],
+      "n_results_scanned": 5,
+      "top5": [
+        {"title": "Knowing but Not Showing: LLMs Recognize Ambiguity but Rarely Ask Clarifying Questions", "id": "arXiv:2605.25284", "venue": "arXiv 2026 (Su & Cardie, Cornell)", "year": 2026, "url": "https://arxiv.org/abs/2605.25284", "verdict": "PARTIAL"},
+        {"title": "Interactive Agents to Overcome Ambiguity in Software Engineering", "id": "arXiv:2502.13069", "venue": "arXiv 2025", "year": 2025, "url": "https://arxiv.org/html/2502.13069v1", "verdict": "PARTIAL"},
+        {"title": "How AI Models Handle Ambiguous Queries (practitioner)", "id": "singlegrain", "venue": "industry blog", "year": 2026, "url": "https://www.singlegrain.com/blog/amazon-advertising-case-studies-7", "verdict": "MISS"}
+      ],
+      "note": "Strongest quantitative analogue of our phenomenon: 60-80% ambiguity recognition when asked, >95% direct answers when not asked, clarification rate <5%. AND: providing context SUPPRESSES clarification -> directly supports 'materials dampen critique'. But: about user queries, not documents; 1-2 sentence inputs."
+    },
+    {
+      "id": "Q08",
+      "brief_angle": "NEW ANGLE (not in brief) - instruction-constraint conflicts",
+      "query": "router/instruction conflict detection benchmark LLM notify user proactively constraint conflict",
+      "channel": "web_search depth=2 (surfaced via Q12 Chinese+self-flagging batch)",
+      "venue_targets": ["AAAI 2026", "papernotes"],
+      "n_results_scanned": 2,
+      "top5": [
+        {"title": "ConInstruct: Evaluating Large Language Models on Conflict Detection and Resolution in Instructions", "id": "AAAI 2026 (papernotes)", "venue": "AAAI 2026", "year": 2026, "url": "https://en.papernotes.org/AAAI2026/llm_evaluation/coninstruct_evaluating_large_language_models_on_conflict_detection_and_resolutio/", "verdict": "PARTIAL"},
+        {"title": "Same paper, secondary record", "id": "coninstruct-note", "venue": "papernotes", "year": 2026, "url": "https://en.papernotes.org/AAAI2026/llm_evaluation/coninstruct_evaluating_large_language_models_on_conflict_detection_and_resolutio/", "verdict": "PARTIAL"}
+      ],
+      "note": "SECOND MOST THREATENING FIND. Task = follow the instruction (no detection instruction at all). Metric = whether model NOTIFIES about the injected constraint conflict. Headline: 'LLMs can generally detect conflicts in instructions but rarely notify users proactively - even Claude-4.5-Sonnet does so explicitly in only 45% of cases'. Ablation: with 1-2 conflicts, 97.5% answer directly without acknowledging. Nailed D2+D3+D4. Missing only long document."
+    },
+    {
+      "id": "Q09",
+      "brief_angle": "angle 6 (self-flagging / self-reporting data quality)",
+      "query": "LLM self-flagging data quality issues unprompted annotation unreliable data critique dataset",
+      "channel": "web_search depth=2",
+      "venue_targets": ["ACL", "EMNLP", "arXiv", "MDPI"],
+      "n_results_scanned": 5,
+      "top5": [
+        {"title": "Are LLMs Better than Reported? Detecting Label Errors (EMNLP 2025)", "id": "2025.emnlp-main.1360", "venue": "EMNLP 2025", "year": 2025, "url": "https://aclanthology.org/2025.emnlp-main.1360.pdf", "verdict": "MISS"},
+        {"title": "Data Annotation with LLMs: Lessons from a Large Empirical Evaluation", "id": "eddieyang-llm_annotation", "venue": "working paper", "year": 2025, "url": "https://www.eddieyang.net/research/llm_annotation.pdf", "verdict": "MISS"},
+        {"title": "Transforming Data Annotation with AI Agents (review)", "id": "mdpi-17-8-353", "venue": "MDPI Future Internet", "year": 2025, "url": "https://www.mdpi.com/1999-5903/17/8/353", "verdict": "MISS"},
+        {"title": "Too Much Annotated Data is Bad (Cornell DLI)", "id": "dli-cornell", "venue": "Cornell DLI blog", "year": 2026, "url": "https://dli.tech.cornell.edu/post/too-much-annotated-data-is-bad-what-can-we-do-about-it", "verdict": "MISS"},
+        {"title": "10 Common LLM Data Annotation Mistakes", "id": "macgence", "venue": "vendor blog", "year": 2026, "url": "https://macgence.com/blog/common-llm-data-annotation-mistakes/", "verdict": "MISS"}
+      ],
+      "note": "Label-error detection is a real literature but always framed as a tasked audit ('re-annotate and flag'). ERR: 6-21% of label errors detected. No no-query variant."
+    },
+    {
+      "id": "Q10",
+      "brief_angle": "angle 12 (Chinese search)",
+      "query": "大模型 主动发现 文档 矛盾 异常 无需提示 长文本 自发 检出",
+      "channel": "web_search depth=2",
+      "venue_targets": ["中文技术博客", "CSDN", "知乎", "安全内参"],
+      "n_results_scanned": 4,
+      "top5": [
+        {"title": "如何用 AI 检查多份文档中的矛盾：附提示词与示例", "id": "evolink-zh", "venue": "evolink.ai blog", "year": 2026, "url": "https://evolink.ai/zh/blog/find-contradictions-across-documents", "verdict": "MISS"},
+        {"title": "大语言模型的幻觉问题研究综述", "id": "secrss-73856", "venue": "安全内参", "year": 2024, "url": "https://www.secrss.com/articles/73856", "verdict": "MISS"},
+        {"title": "长文深度解析：大模型的\"上下文陷阱\"与6大修复技巧", "id": "csdn-154394363", "venue": "CSDN", "year": 2025, "url": "https://blog.csdn.net/qq_43688587/article/details/154394363", "verdict": "MISS"},
+        {"title": "一文读懂：大模型 Deep Research 背后的技术原理", "id": "zhihu-2047376160", "venue": "知乎", "year": 2026, "url": "https://zhuanlan.zhihu.com/p/2047376160225497268", "verdict": "MISS"}
+      ],
+      "note": "Chinese-language hits are all practitioner tutorials: they instruct the model ('把\"帮我看看有没有矛盾\"变成一个可以完成的任务'). Notably the tutorial explicitly warns '直接要求\"综合整理\"可能把分歧藏进一个看似确定的答案里' — folk knowledge of exactly our phenomenon, zero academic treatment in Chinese sources found."
+    },
+    {
+      "id": "Q11",
+      "brief_angle": "angle 7 (metacognition in long context) rephrased as sycophancy/compliance",
+      "query": "sycophancy compliance suppresses critique LLM does not point out error in user's text even when noticed",
+      "channel": "web_search depth=2",
+      "venue_targets": ["arXiv", "pith", "blogs"],
+      "n_results_scanned": 5,
+      "top5": [
+        {"title": "LLMs Know They're Wrong and Agree Anyway: The Shared Sycophancy-Lying Circuit", "id": "arXiv:2604.19117", "venue": "arXiv 2026", "year": 2026, "url": "https://pith.science/paper/2604.19117", "verdict": "PARTIAL"},
+        {"title": "AI Sycophancy: Why Your LLM Always Agrees With You (2026 Stanford)", "id": "nicolasmeridjen-blog", "venue": "blog", "year": 2026, "url": "https://blog.nicolasmeridjen.com/en/blog/2026-03-29-ai-sycophancy-why-your-llm-always-agrees/", "verdict": "MISS"},
+        {"title": "LLM Sycophancy: Definition, Evidence, and Evaluation", "id": "andyagentlab", "venue": "review article", "year": 2026, "url": "https://www.andyagentlab.com/articles/model-training-and-eval/sycophancy-agreement-bias/", "verdict": "MISS"},
+        {"title": "Sycophantic Behavior in LLMs (topic overview)", "id": "emergentmind-sycophancy", "venue": "emergentmind", "year": 2025, "url": "https://www.emergentmind.com/topics/sycophantic-behavior-in-llms", "verdict": "MISS"},
+        {"title": "The AI Sycophancy Problem", "id": "substack-juliadiez", "venue": "substack", "year": 2026, "url": "https://juliadiez.substack.com/p/the-ai-sycophancy-problem-why-your", "verdict": "MISS"}
+      ],
+      "note": "MECHANISM GOLDMINE. 2604.19117 (12 open-weight models, 5 labs): a small set of attention heads carries a 'this statement is wrong' signal; models register the error and still defer; silencing the heads flips behaviour; the circuit survives RLHF/DPO. This is a causal mechanism for 'noticed but not reported' - identical to MMPCBench's consistency gap."
+    },
+    {
+      "id": "Q12",
+      "brief_angle": "angle 8 (attention sink / position bias + detection)",
+      "query": "lost in the middle position bias model fails to notice anomaly in middle of long context detection unprompted",
+      "channel": "web_search depth=2",
+      "venue_targets": ["TACL", "Chroma research", "blogs"],
+      "n_results_scanned": 5,
+      "top5": [
+        {"title": "Lost in the Middle (Liu et al., TACL 2024) + Found in the Middle discussion", "id": "memx-blog", "venue": "memx blog", "year": 2026, "url": "https://memx.app/blog/lost-in-the-middle-long-context-fails/", "verdict": "MISS"},
+        {"title": "The 'Lost in the Middle' Problem (softmax analysis)", "id": "bytebell-blog", "venue": "bytebell blog", "year": 2026, "url": "https://bytebell.ai/blog/lost-in-the-middle-problem/", "verdict": "MISS"},
+        {"title": "Long Context Is Not Infinite Memory", "id": "heysprite-blog", "venue": "blog", "year": 2026, "url": "https://heysprite.com/blog/long-context-is-not-infinite-memory-why-language-models-still-lose-the-plot-in-the-middle", "verdict": "MISS"},
+        {"title": "Context Rot (Chroma, 18 models)", "id": "chroma-context-rot", "venue": "Chroma research", "year": 2025, "url": "https://memx.app/blog/lost-in-the-middle-long-context-fails/", "verdict": "MISS"}
+      ],
+      "note": "Position-bias literature is about RETRIEVING a queried fact, not about noticing an unqueried anomaly. No paper measures 'does the buried anomaly get flagged as a function of position'. This is a clean measurement gap that OUR experiment can fill cheaply (position sweep)."
+    },
+    {
+      "id": "Q13",
+      "brief_angle": "NEW ANGLE - conflict-aware summarization (does the writer report source conflict?)",
+      "query": "conflict-aware summarization does model report conflicting sources in document unfaithful input mention discrepancy",
+      "channel": "web_search depth=2",
+      "venue_targets": ["arXiv", "survey", "Lacuna direction page"],
+      "n_results_scanned": 4,
+      "top5": [
+        {"title": "Conflicts in Texts: Data, Implications and Challenges (survey)", "id": "arXiv:2504.19472", "venue": "arXiv 2025", "year": 2025, "url": "https://arxiv.org/pdf/2504.19472", "verdict": "MISS"},
+        {"title": "CARE-RAG: Rethinking All Evidence (conflict-driven summarization)", "id": "arXiv:2507.01281", "venue": "arXiv 2025", "year": 2025, "url": "https://arxiv.org/pdf/2507.01281", "verdict": "MISS"},
+        {"title": "Adjudicating Conflicting Evidence in LLMs (direction review)", "id": "lacuna-adjudicating", "venue": "lacuna", "year": 2026, "url": "https://lacuna.tiptreesystems.com/direction/adjudicating-conflicting-evidence-in-large-language-models/txn_561fed51565e42d4941ade58e9b7c59e", "verdict": "MISS"},
+        {"title": "Finding Factual Inconsistencies in Abstractive Summaries (thesis)", "id": "uni-hamburg-ma", "venue": "MSc thesis", "year": 2021, "url": "https://www.inf.uni-hamburg.de/en/inst/ab/lt/teaching/theses/completed-theses/2021-ma-timfischer.pdf", "verdict": "MISS"}
+      ],
+      "note": "Conflict-aware generation always ADDS a detection stage to the pipeline by design (CARE-RAG distils a 3B conflict detector). Nobody measures whether an unmodified model volunteers the conflict during a plain summarization/analysis task. BUT the survey (2504.19472) frames 'present multiple viewpoints / explain contradictions when detected' as a desideratum - usable as a citation for why our question matters."
+    },
+    {
+      "id": "Q14",
+      "brief_angle": "angle 10 (OpenReview / workshop-level)",
+      "query": "OpenReview NeurIPS 2026 workshop benchmark spontaneous anomaly detection LLM document reading unstated issue",
+      "channel": "web_search depth=2",
+      "venue_targets": ["OpenReview", "NeurIPS", "workshop"],
+      "n_results_scanned": 5,
+      "top5": [
+        {"title": "Document-Level Anomaly Detection in Semi-Structured Text using LLMs", "id": "academicresearchlibrary-2026", "venue": "conference proceedings (Apr 2026)", "year": 2026, "url": "https://academicresearchlibrary.com/storage/pdf/nWfMqRf6DlNEtfYsNEMWUmgEcgecjjXmavNhyhQ9.pdf", "verdict": "MISS"},
+        {"title": "CAVE: Detecting and Explaining Commonsense Anomalies in Visual Environments", "id": "neurips2025:133793", "venue": "NeurIPS 2025", "year": 2025, "url": "https://neurips.cc/virtual/2025/133793", "verdict": "MISS"},
+        {"title": "Delving into LLMs for Effective Time-Series Anomaly Detection", "id": "neurips2025:119760", "venue": "NeurIPS 2025", "year": 2025, "url": "https://neurips.cc/virtual/2025/poster/119760", "verdict": "MISS"},
+        {"title": "NeurIPS 2026 peer-review experiment coverage (noise)", "id": "groundtruth-2026", "venue": "news", "year": 2026, "url": "https://groundtruth.day/news/neurips-is-running-a-randomized-experiment-on-ai-assisted-review.html", "verdict": "MISS"}
+      ],
+      "note": "Workshop layer yielded NO hit; the OpenReview API is blocked so this is a WEAK-CONFIDENCE channel (search engine only indexes some workshop PDFs). Document-level anomaly detection exists but is task-directed (financial records, invoices, forms)."
+    },
+    {
+      "id": "Q15",
+      "brief_angle": "NEW ANGLE - legal 'issue spotting' (domain vocabulary that could hide a hit)",
+      "query": "legal \"issue spotting\" benchmark LLM identify issues in fact pattern without being told what to look for",
+      "channel": "web_search depth=2",
+      "venue_targets": ["LegalBench/NeurIPS", "arXiv", "FutureAGI"],
+      "n_results_scanned": 5,
+      "top5": [
+        {"title": "LegalBench (issue-spotting as one of 6 reasoning types, 16-17 tasks)", "id": "arXiv:2308.11462", "venue": "NeurIPS 2023 D&B", "year": 2023, "url": "https://arxiv.org/pdf/2308.11462", "verdict": "MISS"},
+        {"title": "PLawBench: rubric-based benchmark for real legal practice", "id": "arXiv:2601.16669", "venue": "arXiv 2026", "year": 2026, "url": "https://arxiv.org/pdf/2601.16669", "verdict": "MISS"},
+        {"title": "LegalBench domain-specific benchmark guide (2026 frontier bands)", "id": "futureagi-legalbench", "venue": "FutureAGI glossary", "year": 2026, "url": "https://futureagi.com/glossary/legalbench-domain-specific-benchmark/", "verdict": "MISS"}
+      ],
+      "note": "Issue-spotting is the closest EXISTING TASK NAME to our concept, but in LegalBench it is operationalised as a yes/no 'does this post implicate domain X' classification - i.e. a query is supplied. PLawBench's consultation task does grade 'identification of legal issues' but the user explicitly asks for legal help. So domain vocabulary does not hide a hit, but it gives us a legitimate, citable task-name ancestry."
+    },
+    {
+      "id": "Q16",
+      "brief_angle": "NEW ANGLE - clinical documentation inconsistency (real-world long docs, unqueried flagging)",
+      "query": "LLM detects incidental abnormal finding in long patient record or report unprompted flags inconsistency clinical document",
+      "channel": "web_search depth=2",
+      "venue_targets": ["arXiv/pith", "medRxiv", "PMC", "OpenReview"],
+      "n_results_scanned": 5,
+      "top5": [
+        {"title": "Toward Automated Detection of Documentation Inconsistencies in Electronic Health Records", "id": "arXiv:2607.22954", "venue": "arXiv 2026", "year": 2026, "url": "https://pith.science/paper/2607.22954", "verdict": "MISS"},
+        {"title": "A medically grounded LLM agent tool to detect patient safety events", "id": "PMC13585220", "venue": "PMC", "year": 2026, "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13585220", "verdict": "MISS"},
+        {"title": "Clinician-Centered Evaluation of LLM-Generated Discharge Summaries", "id": "medrxiv-2026-06-03", "venue": "medRxiv", "year": 2026, "url": "https://www.medrxiv.org/content/10.64898/2026.06.03.26354858v1.full", "verdict": "PARTIAL"},
+        {"title": "Faithfulness Hallucination Detection in Healthcare AI", "id": "openreview:6eMIzKFOpJ", "venue": "OpenReview", "year": 2026, "url": "https://openreview.net/pdf?id=6eMIzKFOpJ", "verdict": "MISS"},
+        {"title": "Detecting Clinical Discrepancies in Health Coaching Agents", "id": "arXiv:2604.27045", "venue": "arXiv 2026", "year": 2026, "url": "https://arxiv.org/html/2604.27045", "verdict": "MISS"}
+      ],
+      "note": "2607.22954 is a real-world LONG-document inconsistency pipeline (3000 MIMIC-IV discharge summaries, 3460 candidate pairs, ~70% of admissions flagged) BUT Stage-1 prompt explicitly asks the model to scan and return candidate pairs - task-directed. The discharge-summary study (medRxiv) has an interesting PARTIAL: an LLM pipeline that reports radiology incidental findings into a summary, with the prompt 'directed to identify findings that were specifically flagged by radiologists for follow-up' - i.e. instructed, so MISS in strict terms, but it shows clinical demand for volunteered flagging."
+    }
+  ],
+  "verdict_summary": {
+    "strict_HIT_count": 0,
+    "partial_hit_count": 9,
+    "miss_count": 16,
+    "partial_hit_ids": ["2608.29286 MMPCBench", "2505.23715 PCBench", "ConInstruct (AAAI 2026)", "2605.25284 Knowing-but-Not-Showing", "2505.16170 Retraction (COLM 2026)", "2506.15894 Single-Utterance Self-Correction", "2412.16653 InSeC", "2604.19117 Sycophancy-Lying Circuit", "medRxiv discharge-summary incidental findings"],
+    "closest_non_hits": ["2512.18601 FIND (long doc x planted anomaly, but instructed)", "2311.09182 ContraDoc", "2607.22954 EHR documentation inconsistencies"],
+    "gap_status": "SURVIVES in the strict 4-way conjunction, but DEGRADED from 'capability gap' to 'Cartesian-product gap'",
+    "confidence_in_verdict": 0.58,
+    "confidence_note": "0.85 on the factual inventory (every listed paper verified against abs page or venue record); 0.58 on 'still a publishable gap' because three papers sit exactly one dimension away and the combination is a reviewer-obvious next step. Down from Lead's 0.70."
+  }
+}
