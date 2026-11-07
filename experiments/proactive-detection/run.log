@@ -1,0 +1,21 @@
+
+=== Condition: headers (4993 chars) ===
+  r0: 2/3 [H2_constraint H3_counterintuitive] (2614 chars)
+  r1: 3/3 [H1_contradiction H2_constraint H3_counterintuitive] (2575 chars)
+  r2: 3/3 [H1_contradiction H2_constraint H3_counterintuitive] (2611 chars)
+  r3: 2/3 [H1_contradiction H3_counterintuitive] (2619 chars)
+  r4: 3/3 [H1_contradiction H2_constraint H3_counterintuitive] (2634 chars)
+
+=== Condition: plain (4900 chars) ===
+  r0: 3/3 [H1_contradiction H2_constraint H3_counterintuitive] (2602 chars)
+  r1: 3/3 [H1_contradiction H2_constraint H3_counterintuitive] (2567 chars)
+  r2: 3/3 [H1_contradiction H2_constraint H3_counterintuitive] (2595 chars)
+  r3: 2/3 [H1_contradiction H3_counterintuitive] (2658 chars)
+  r4: 2/3 [H2_constraint H3_counterintuitive] (2682 chars)
+
+Saved 10 records → /Users/a1-6/Desktop/workspace/paradigm-routing/experiments/proactive-detection/results_proactive.jsonl
+
+=== SUMMARY ===
+  headers    avg=2.60/3  H1=4/5  H2=4/5  H3=5/5
+  plain      avg=2.60/3  H1=4/5  H2=4/5  H3=5/5
+EXIT=0
