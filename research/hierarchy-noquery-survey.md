@@ -103,6 +103,31 @@ D1-D5 (task-directed) + F1-F3 (proactive 但短输入/特定场景) + 我们的 
 2. **对标策略**：论文 related work 节应引 F1+F2，定位是"将 proactive critique 从短输入缺陷检测扩展到长文档开放式阅读"
 3. **实验扩展**：加一个条件——在 prompt 中加一句"如果材料中有值得注意的问题，请指出"（半 no-query），看 2.6/3 能提到多少。这能区分"模型没注意到"vs"注意到了但觉得不该说"（= consistency gap 的文本版）
 
+## G. 先验 vs 推理：敏锐性的解耦（2026-11-07 追加）
+
+> 触发问题：proactive-detection v1 的 2.6/3 是"推理敏锐"还是"先验匹配"？我埋的钩子全是统计离群值（9 亿差异、42%→78%），模型靠训练数据里的"正常范围"先验就能抓——跟成璐察觉 0.80 太规整（需要推理出格点结构）不是一回事。如果领域不熟，纯推理还能不能发现异常？
+
+**核心问题**：模型的"异常觉察"能力 = f(先验知识, 推理能力)，两者纠缠。怎么拆？
+
+| ID | 标题 | arXiv/Venue | 核心方法 | 关键发现 | 与我们的关系 |
+|----|------|------------|---------|---------|-------------|
+| G1 | **LINGOLY-TOO**: Disentangling Reasoning from Knowledge with Templatised Orthographic Obfuscation | 2503.02972 | 对 Linguistics Olympiad 题做**正交混淆**（替换语言/符号系统），保留解题逻辑但消除先验知识捷径 | 原始题 ~0.59 → 混淆后 ~0.48。即使最好的推理模型也显著下降。**模型确实在用记忆/知识走捷径，混淆后暴露真实推理水平** | **最接近我们问题的方法论**：他们的"混淆"≈ 我们的"换到模型不熟的领域"。直接启示：测 proactive detection 时，把 hook 放在模型先验弱的领域（如小众学科数据），看检测率是否掉——掉了说明靠的是先验不是推理 |
+| G2 | **FinEval-KR**: Financial Domain Evaluation Framework for Knowledge and Reasoning | 2506.21591 | 设计框架**独立量化** LLM 的 knowledge score 和 reasoning score（受认知科学 Bloom taxonomy 启发） | 当前 benchmark 无法将知识和推理从单一任务表现中解耦；提出分维度评分 | 提供了"怎么分别测先验和推理"的评分框架设计思路。我们的 proactive detection 可以加一个维度：hook 所在领域的 familiarity（高/低），看检测率 × familiarity 的交互 |
+| G3 | **KCL**: Korean Canonical Legal Benchmark (knowledge-independent legal reasoning) | 2512.24572 | 每题提供 supporting precedents（法律判例），使推理可以**不依赖参数化知识**完成 | 30+ 模型评估，reasoning-specialized 模型持续优于通用模型；essay 部分差距大 | "给材料让模型自己推"vs"靠模型脑子里的知识"——正是我们想要的实验条件。如果把 hook 的"正常范围"显式写在文档里（而非依赖模型先验），检测率的变化 = 先验贡献的直接测量 |
+| G4 | **SHOW**: LLMs Know More Than They Show (ICLR 2025) | 2410.02707 | 探测 LLM 内部 hidden states 中的 truthfulness 信号 | ① truthfulness 信息集中在特定 token；② **error detector 不跨数据集泛化**——truthfulness encoding 不是通用的而是多面的；③ 模型内部编码了正确答案但外部输出错误 | ② 直接回答"先验 vs 推理"：**内部表征不是统一的"异常信号"，而是多维度、domain-specific 的**。意味着：模型在 A 领域学到的"什么算异常"不能迁移到 B 领域。这解释了为什么"换到不熟领域"会掉——不是推理能力掉了，是先验模式匹配失效了 |
+| G5 | AD-LLM: Benchmarking LLMs for Anomaly Detection | 2412.11142 / ACL 2025 Findings | 第一个 NLP 异常检测 LLM benchmark：zero-shot detection + data augmentation + model selection | LLM 在 zero-shot AD 上表现好，但**依赖预训练知识**（task i 的定义就是"using pretrained knowledge"） | 确认了 AD-LLM 的 zero-shot 设定本质上是"先验匹配"任务。没有测试"模型对该领域无先验时还能不能检测"——这正是我们的 gap |
+| G6 | LLM Anomaly/OOD Detection Survey | 2409.01980 | 综述 LLM 在 anomaly/OOD 检测中的角色分类 | 按 LLM 的角色分为两类 taxonomy；指出 cross-domain generalization 是 open problem | 确认"cross-domain"是该领域的已知开放问题，但没人做了控制实验 |
+
+### 对我们实验设计的直接启示
+
+1. **LINGOLY-TOO 的方法论可直接移植**：他们的"正交混淆"（保留逻辑、消除先验）≈ 我们把 hook 放到模型先验弱的领域。具体操作：同一组 hook 数字，一组放在"经济学报告"里（模型有强先验：GDP、增长率、百分比的正常范围），另一组放在"XX 小众工业品质量检测报告"里（模型对该领域的正常范围几乎无先验）。如果检测率在后者显著下降 → 证明 proactive detection 主要靠先验，不是推理。
+
+2. **KCL 的"提供材料"策略**：在文档里显式写出"该指标的正常范围是 X-Y"，然后放一个超出范围的数字。如果模型能检测 → 说明它有能力做 range check（推理），只是平时不做（没被 prompt 引导）。如果还是不能 → 说明连显式范围都给不出足够信号，瓶颈在 attention 不在先验。
+
+3. **SHOW 的"不泛化"发现**：truthfulness encoding 是 domain-specific 的 → 预期"换领域后检测率下降"。这个预测可证伪：如果换了领域检测率不掉，说明模型用的是某种 domain-general 的信号（比如"数字突变"本身作为 low-level feature），那我们的 autoresearch 系统设计就可以放心用"数字突变"作为通用 hook 类型。
+
+4. **对范式路由的含义**：如果 proactive detection 主要靠先验（G1/G5 暗示如此），那么"让模型自主发现研究缺口"这件事在模型不熟的领域会系统性失败——autoresearch 系统需要在"模型不熟"时切换到"人工指定检查方向"模式，而不是指望模型自己找。这是范式路由的一个新路由条件：**domain familiarity → 自主检测 vs 人工引导**。
+
 ## 待核验 / 边界
 
 - [待核验] B2 的 arXiv ID：2610.00958 页面标注"This submission was made in error... instead of a new version for arXiv:2512.06869"——正式引用应查 2512.06869
