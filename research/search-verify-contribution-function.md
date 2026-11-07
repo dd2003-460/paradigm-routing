@@ -9,7 +9,7 @@
 
 ## 0. AC3 判决句（先给答案）
 
-> **合成目标不存在。只有伪合成 4 例（SearchGym、SSPO、GroundedPRM、UnifiedPlayers 中的加权和/嵌套形态），纯单侧 2 例（MARCH、Proof-Carrying Cognition）。**
+> **合成目标不存在。只有伪合成 2 例（SSPO 的嵌套、UnifiedPlayers 的加权和），纯单侧 4 例（SearchGym、GroundedPRM、MARCH、Proof-Carrying Cognition）。**
 > 更精确地说：**没有任何一篇论文的目标函数里同时出现"搜集质量项 × 校验质量项"的乘积或交互项**。最接近的三次尝试分别倒在三处——
 > ① **加权和**（UnifiedPlayers 的 role-specific rewards）：两侧都在，但可加 ⇒ 不能表达"搜集好但校验差 ⇒ 整体无价值"的乘性失效；
 > ② **嵌套**（SSPO 的"outcome 定方向 + teacher 定幅度"）：只调"改多少"，不区分"哪一侧贡献了多少"；
