@@ -1,0 +1,232 @@
+{
+  "meta": {
+    "task": "T-PR-07 long-step insight decomposability survey",
+    "repo": "https://github.com/dd2003-460/paradigm-routing",
+    "branch": "arena/62fe3fd4-paradigm-routing",
+    "executor": "Arena agent (LMArena Agent Mode)",
+    "executed_at_utc": "2026-11-07",
+    "task_book": "tasks/T-PR-07-long-insight-decomposability.md",
+    "deliverable": "research/long-insight-decomposability-survey.md",
+    "mode": "pure literature review — no local experiments",
+    "append_only": true,
+    "note_on_append_only": "本条日志按时间顺序追加；已写入的 query 条目不做删除或改写，更正以 self_corrections 字段另行追加。",
+    "groups": {
+      "G-Q1": "可分解性（decomposition / distillation / insight transfer）",
+      "G-Q2": "ctx 下界（token budget / depth vs window）",
+      "G-Q3": "不可分解性（complexity lower bounds / pebbling / planning）",
+      "G-Q4": "dense vs explicit search（same-task same-budget）",
+      "G-ID": "编号核验（防止凭记忆引用）"
+    },
+    "criteria": {
+      "ADOPT": "命中一手 arXiv/会议论文，且可用于某一子问题的判决",
+      "CONTEXT": "有信息量但不构成判决依据（二手综述、博客、认知心理学）",
+      "REJECT": "无可引 arXiv id / 与问题无关 / 噪声",
+      "MIS-ID": "编号与记忆不符，实访发现张冠李戴"
+    }
+  },
+
+  "channels": {
+    "web_search": {
+      "status": "OK",
+      "quality_note": "可用，但泛化 query 噪声极高：'insight' + LLM 类 query 大量返回认知心理学论文与博客（REJECT），必须用 arXiv 定向 phrasing 才能拿到可引 id。"
+    },
+    "fetch_page_arxiv_abs": { "status": "OK", "note": "arxiv.org/abs/* 稳定可取，含完整 abstract + 元数据" },
+    "fetch_page_arxiv_html": { "status": "OK", "note": "arxiv.org/html/*vN 可取正文，是本轮拿到定理编号与表格的主要通道" },
+    "fetch_page_arxiv_pdf": { "status": "FAIL", "note": "arxiv.org/pdf/* 本轮全部 'Failed to fetch'（F02）。降级路径：abs → html。" },
+    "payload": { "status": "READ_ONLY", "note": "arxiv.org/src/* TeX 源未尝试（无必要）" }
+  },
+
+  "queries": [
+    {
+      "id": "Q01", "group": "G-Q3", "round": 1,
+      "query": "chain of thought empowers transformers solve inherently serial problems lower bound 2402.12875",
+      "hits_reviewed": 5, "verdict": "ADOPT",
+      "adopted": ["2402.12875"],
+      "reason": "拿到 AC^0 上界与 CoT[T,d,s,e]=P/poly 的定理级表述，是 Q3 无条件下界的主锚点"
+    },
+    {
+      "id": "Q02", "group": "G-Q1", "round": 1,
+      "query": "chain of thought distillation negative results small model reasoning",
+      "hits_reviewed": 5, "verdict": "CONTEXT",
+      "adopted": ["2505.18642"],
+      "reason": "只拿到一篇可用（Skip-Thinking 的并行子任务失败模式，摘录级 conf 0.55）；其余为博客/出版社页，无 arXiv id → 该 query 判定为低产，改用 arXiv 定向 phrasing 重搜（Q12）"
+    },
+    {
+      "id": "Q03", "group": "G-Q2", "round": 1,
+      "query": "Sanford Hsu Telgarsky 2402.05369 transformers parallel computation logarithmic depth",
+      "hits_reviewed": 4, "verdict": "ADOPT",
+      "adopted": ["2402.09268"],
+      "reason": "命中 MPC 等价与 k-hop 的 Theta(log k)；但编号与我记忆中的 2402.05369 不符 → 触发 Q15 核验"
+    },
+    {
+      "id": "Q04", "group": "G-Q1", "round": 1,
+      "query": "insight problem solving LLM benchmark aha analogical transfer cross-domain decomposition fails Remote Associates",
+      "hits_reviewed": 5, "verdict": "CONTEXT",
+      "adopted": ["2510.05432"],
+      "reason": "大多数命中是认知心理学 RAT/CRA 实验（人类被试，无 LLM 对照）→ REJECT 一半。仅 AInstein 可用（跨域类比迁移失败），是 Q1 反面证据的唯一量化来源"
+    },
+    {
+      "id": "Q05", "group": "G-Q3", "round": 1,
+      "query": "pebbling game space lower bound chain of thought transformer reasoning simulation memory",
+      "hits_reviewed": 5, "verdict": "CONTEXT",
+      "adopted": [],
+      "also_cited": ["Savage ModelsOfComputation Ch.10 (classical textbook)"],
+      "reason": "全部命中经典复杂度/量子 pebbling 文献（reversible / spooky pebble game），**没有一篇接到 LLM CoT**。此 query 是 N3 负结果的直接依据"
+    },
+    {
+      "id": "Q06", "group": "G-Q4", "round": 1,
+      "query": "Coconut continuous latent reasoning vs chain of thought 2412.06769 Large Language Monkeys repeated sampling beats search",
+      "hits_reviewed": 5, "verdict": "ADOPT",
+      "adopted": ["2412.06769"],
+      "reason": "拿到 Table 1 全部数字（GSM8K CoT 42.9 vs Coconut 34.1；ProsQA 77.5 vs 97.0），是 Q4 唯一同模型同任务的隐式/显式对照"
+    },
+    {
+      "id": "Q07", "group": "G-Q1", "round": 1,
+      "query": "small language models need strong verifiers to self-correct reasoning 2407.13692 prover verifier gap",
+      "hits_reviewed": 5, "verdict": "ADOPT",
+      "adopted": ["2407.13692"],
+      "reason": "拿到 refiner/verifier 分离 + 'bottlenecked by the verifier rather than the refiner' 原文，是 Q1 与 §6.3 双来源的一半。附带发现二手综述（Lacuna）转述的 '<1% 自找错' 数字，仅作 conf 0.6 旁证"
+    },
+    {
+      "id": "Q08", "group": "G-Q4", "round": 1,
+      "query": "\"Large Language Monkeys\" repeated sampling scaling inference compute beats complex search same budget 2407.21787",
+      "hits_reviewed": 5, "verdict": "ADOPT",
+      "adopted": ["2407.21787"],
+      "reason": "拿到 15.9%→56%（250 样本）、10k 样本 >95% 覆盖率、majority voting/reward model 数百样本后 plateau —— Q4 最锋利的一条。附带发现批判性后续 'Keep Guessing? Mind the Baselines'（未采纳，仅记录风险）"
+    },
+    {
+      "id": "Q09", "group": "G-Q2", "round": 1,
+      "query": "Merrill Sabharwal expressive power of transformers with chain of thought 2310.07923 log precision TC0 polynomial steps P",
+      "hits_reviewed": 5, "verdict": "ADOPT",
+      "adopted": ["2310.07923"],
+      "reason": "拿到 Eq.1 完整包含式与 Knowl 3/5/6/8 的定理陈述（TIME(t) ⊆ CoT(t) ⊆ SPACE(t+log n)）"
+    },
+    {
+      "id": "Q10", "group": "G-Q3", "round": 1,
+      "query": "LLM planning Blocksworld PlanBench fails global constraints decomposition does not help search backtracking",
+      "hits_reviewed": 5, "verdict": "ADOPT",
+      "adopted": ["2605.20873", "2505.12135"],
+      "reason": "命中 T1（全局一致性）的实测侧：PlanningBench All-pass vs Avg-pass 差距、BabyBench 的 'know what to do but can't do it'。注意 PlanBench 原始论文未直接命中，改用这两个一手来源"
+    },
+    {
+      "id": "Q11", "group": "G-Q4", "round": 1,
+      "query": "test-time compute scaling Snell 2408.03314 best-of-N vs beam search vs lookahead same budget comparison revision",
+      "hits_reviewed": 5, "verdict": "ADOPT",
+      "adopted": ["2408.03314"],
+      "reason": "拿到 §5.2/§6.2 的同预算对照（低预算 beam 胜、高预算 BoN 反超、lookahead 普遍最差）与 4× 算力节省数字；含按难度分档的图注解读"
+    },
+    {
+      "id": "Q12", "group": "G-Q1", "round": 1,
+      "query": "distilling step-by-step 2210.11416 770M outperforms 540B with 80% less data rationale extraction least-to-most 2205.10625",
+      "hits_reviewed": 5, "verdict": "ADOPT",
+      "adopted": ["2210.11416"],
+      "reason": "拿到 ACL Anthology 正版摘要与三条 findings（770M T5 / 80% 数据 / 打赢 few-shot 540B PaLM）。**least-to-most 2205.10625 本轮未能取得正文数字，故不引用**（避免凭记忆）"
+    },
+    {
+      "id": "Q13", "group": "G-Q1", "round": 1,
+      "query": "Lanham 2307.13702 measuring faithfulness chain of thought unfaithful post-hoc rationalization results",
+      "hits_reviewed": 5, "verdict": "ADOPT",
+      "adopted": ["2307.13702"],
+      "reason": "拿到 Anthropic PDF 正文片段：AOC（AQuA >60% vs ARC-Easy <10%）、filler token 不涨、逆 scaling。<13B 模型 CoT 几乎无收益（Appendix C）也是关键限定"
+    },
+    {
+      "id": "Q14", "group": "G-Q4", "round": 1,
+      "query": "transformers learn in-context by gradient descent 2212.07677 implicit optimization weights and chain of thought length limited by context window empirical study",
+      "hits_reviewed": 5, "verdict": "ADOPT",
+      "adopted": ["2212.07677"],
+      "reason": "拿到 Proposition 1（单层 LSA ≙ 一步 GD、K 层 ≙ K 步）与曲率修正；**限定：只在合成回归任务上**，只作 dense/implicit 的机制证据（§7 B3）"
+    },
+    {
+      "id": "Q15", "group": "G-ID", "round": 1,
+      "query": "\"Transformers, Parallel Computation, and Logarithmic Depth\" Sanford Hsu Telgarsky arXiv id",
+      "hits_reviewed": 3, "verdict": "MIS-ID-CORRECTED",
+      "adopted": ["2402.09268"],
+      "reason": "确认真实编号为 2402.09268；我记忆中的 2402.05369 实为 *Noise Contrastive Alignment of Language Models with Explicit Rewards*（NeurIPS 2024，对齐方向），与本任务无关。**本 query 拦截了一次张冠李戴**，已写入报告 §1.4"
+    },
+    {
+      "id": "Q16", "group": "G-Q2", "round": 2,
+      "query": "context window length limit reasoning chain depth quantitative relation transformer dependency hops",
+      "hits_reviewed": 3, "verdict": "CONTEXT",
+      "adopted": ["2603.21676"],
+      "reason": "**没有命中 W→D 的定量关系**（N2 的核心依据）。附带采纳 Depth-Recurrent Transformer（vertical CoT，每水平步耗窗口），作 §3.4 第三种支付方式的旁证（conf 0.6）。另一命中为 tmls.nyc 二手分析文，REJECT"
+    },
+    {
+      "id": "Q17", "group": "G-Q2", "round": 2,
+      "query": "minimum reasoning budget how many chain of thought tokens needed per problem lower bound",
+      "hits_reviewed": 3, "verdict": "ADOPT",
+      "adopted": ["2602.02909"],
+      "reason": "**本轮最重要的命中，且推翻了我第一轮的结论**：BAPO 线给出任务内在 token 下界（MAJORITY/MATCH3n Ω(n)，REACHABILITY Ω(m)），并明确指出指针追踪的 token complexity 随链长而非输入规模 → 直接支撑 §3.3 的 'k ≈ 链长' 判断"
+    },
+    {
+      "id": "Q18", "group": "G-Q2", "round": 2,
+      "query": "Lee et al 2025 \"token complexity\" hypothesis inherent minimal reasoning chain length every problem arXiv",
+      "hits_reviewed": 5, "verdict": "ADOPT",
+      "adopted": ["2503.01141"],
+      "reason": "拿到 token complexity 假设（Assumption 1）、问题级 if-and-only-if 阈值、94% 预测力；并顺带发现 'When More is Less'（最优推理长度，未采纳）"
+    }
+  ],
+
+  "fetches": [
+    { "id": "F01", "url": "https://arxiv.org/abs/2402.12875", "status": "OK", "used_for": "确认 ICLR 2024 / 作者 / abstract 的 AC^0 表述" },
+    { "id": "F02", "url": "https://arxiv.org/pdf/2402.05369", "status": "FAIL", "error": "Failed to fetch", "note": "PDF 直链不通 → 降级 abs/html" },
+    { "id": "F03", "url": "https://arxiv.org/html/2402.12875v4", "status": "OK", "used_for": "Thm 3.1 / Thm 3.3 原文与 §1 推理链" },
+    { "id": "F04", "url": "https://arxiv.org/abs/2402.05369", "status": "MIS-ID", "error": "wrong paper: Noise Contrastive Alignment (NeurIPS 2024)", "note": "ID 核验失败案例，触发 Q15" },
+    { "id": "F05", "url": "https://arxiv.org/html/2402.09268v1", "status": "OK", "used_for": "Thm 3.1/3.4、Cor 3.3/3.5、Conj 2.4、§4 k-hop Θ(log k) 原文" },
+    { "id": "F06", "url": "https://arxiv.org/abs/2306.02896", "status": "OK", "used_for": "sparse averaging / triple detection / 通信复杂度方法" },
+    { "id": "F07", "url": "https://arxiv.org/abs/2602.02909", "status": "OK", "used_for": "BAPO 论文元数据（ICML '26）+ 后续取到 Table 1 与 Thm 4.1–4.3 摘录" }
+  ],
+
+  "self_corrections": [
+    {
+      "id": "SC1",
+      "when": "round 1 → round 2 之间",
+      "what_i_wrote_first": "Q2 判决：不存在任务内在的常数 k 下界；有资源相对下界（CoT(t) ⊆ SPACE(t+log n)）",
+      "why_wrong": "只搜了电路复杂度 / pebbling 词汇，未搜 'token complexity' / 'minimum reasoning budget'；把单侧证据（上界）外推成'没有下界'",
+      "corrected_by": "Q17 / Q18 → 2602.02909 + 2503.01141",
+      "fix_applied": "重写 §3（新增 §3.1 任务内在下界、§3.2 上下界分工、§3.3 k≈链长），更新 §0 判决表、§4.1 T1/T2 行、§4.5 判决、§8 来源表、§10 回应 #2"
+    },
+    {
+      "id": "SC2",
+      "when": "Q05 后",
+      "what_i_wrote_first": "§4.3：没有把 pebbling / 通信复杂度接到 CoT 上的论文",
+      "why_wrong": "通信复杂度**已经**被接上（BAPO 就是量化信息流的通信复杂度抽象）；只有 pebbling 没有",
+      "corrected_by": "Q17 → 2602.02909",
+      "fix_applied": "§4.3 加修正段，把缺口收窄为 'pebbling 特有的图特定下界能力未被使用'"
+    },
+    {
+      "id": "SC3",
+      "when": "Q03 → Q15",
+      "what_i_wrote_first": "Sanford/Hsu/Telgarsky 论文编号 = 2402.05369",
+      "why_wrong": "该编号实为对齐方向论文（Noise Contrastive Alignment）",
+      "corrected_by": "Q15 + F04",
+      "fix_applied": "全文改用 2402.09268，并在 §1.4 写入'未实访的编号一律不写进报告'规则"
+    }
+  ],
+
+  "negative_searches": [
+    { "id": "N1", "target": "人工分解 frontier 洞察 → 小模型同题同预算复现", "queries": ["Q02", "Q04", "Q07", "Q12", "Q06", "Q10"], "status": "NOT_FOUND", "conf_cap": 0.45 },
+    { "id": "N2", "target": "窗口 W → 可完成深度 D 的定量关系 D_max=f(W)", "queries": ["Q09", "Q16", "Q17", "Q18"], "status": "NOT_FOUND", "conf_cap": 0.45 },
+    { "id": "N3", "target": "用 pebbling game 给 CoT 上下文预算证下界", "queries": ["Q05", "Q16", "Q17", "Q18"], "status": "NOT_FOUND", "conf_cap": 0.75 },
+    { "id": "N4", "target": "非单调回溯不可分解的定理", "queries": ["Q05", "Q10"], "status": "NOT_FOUND", "conf_cap": 0.4 },
+    { "id": "N5", "target": "四范式（连续思考/CoT/树搜索+PRM/纯采样）同模型同预算跨难度对照", "queries": ["Q06", "Q08", "Q11", "Q14"], "status": "NOT_FOUND", "conf_cap": 0.5 }
+  ],
+
+  "channel_notes": [
+    "PDF 直链不可用（F02），abs/html 可用 → 后续同类任务应直接走 arxiv.org/abs 或 arxiv.org/html/{id}v{n}。",
+    "泛化英文 query（含 'insight'、'aha'、'local optimum'）噪声最大：命中的一半以上是认知心理学人类被试实验或博客，没有 arXiv 对照实验。",
+    "低产 query 的补救方式：改用论文名/作者名 + arXiv id 的定向 phrasing（Q03/Q15 有效），或改用'领域术语 + 理论术语'（Q17 的 'minimum reasoning budget' 有效）。",
+    "二手站（alphaxiv / emergentmind / lacuna / theorempath / tmls）能快速给出表格与图注，但**一律回访一手 arXiv 页核对数字后才引用**；仅 Lacuna 的一处（'<1% 自找错'）因一手正文未覆盖而保留为 conf 0.6 旁证并标注来源。",
+    "记忆中的编号会错（本轮 1 次），凡未实访的 id 不得写入报告。"
+  ],
+
+  "coverage_check": {
+    "AC1_lines": "394 行（≥300）",
+    "AC2_external_ids": 19,
+    "AC2_fulltext_read": 10,
+    "AC3_verdicts_present": ["Q1", "Q2", "Q3", "Q4"],
+    "AC4_adversarial": "见 loop-artifacts/stages/04.5-final-review/04.5-final-review.md（5 个质询）",
+    "D1_min_3_sources_per_question": { "Q1": 6, "Q2": 5, "Q3": 6, "Q4": 5 },
+    "D3_two_source_check": "见报告 §6.3（5 条结论中 4 条双来源，1 条标单来源 B1）",
+    "D5_negative_results": 5
+  }
+}
