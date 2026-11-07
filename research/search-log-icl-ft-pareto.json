@@ -1,0 +1,69 @@
+{
+  "task": "T-PR-12",
+  "title": "ICL vs 微调的知识注入 Pareto 前沿",
+  "date": "2026-11-07",
+  "branch": "arena/62fe3fd4-paradigm-routing",
+  "anchor": "那有人做过 icl 和权重的极限吗，假设控制其他变量…这个 pareto 函数有吗？然后可以如何指导 icl 的上限？",
+  "criteria": {
+    "D1": "同 base 模型",
+    "D2": "知识量单变量（K↔D 等价对齐，需扫 K）",
+    "D3": "其余受控（评测集/解码/跨模式可比指标）",
+    "D4": "成本同轴（训练 + 全部推理调用）"
+  },
+  "queries": [
+    {"id": "S01", "query": "few-shot fine-tuning versus in-context learning fair comparison evaluation same model", "round": 1,
+     "hits": ["2305.16938", "2604.23267", "2409.14673", "2409.03662", "2405.13181", "2402.12819"],
+     "note": "一轮拿到 Q1 的主要材料；同时暴露大量伪对照（跨模型）"},
+    {"id": "S02", "query": "in-context learning vs fine-tuning controlled comparison knowledge injection matched", "round": 1,
+     "hits": ["2305.16938", "2402.12819"], "note": "与 S01 高度重合，无新对象"},
+    {"id": "S03", "query": "cost comparison fine-tuning vs in-context learning crossover token cost", "round": 2,
+     "hits": [], "note": "无美元/FLOP 交叉点计算 → N3"},
+    {"id": "S04", "query": "sweep number of demonstrations versus fine-tuning samples matched knowledge quantity curve", "round": 2,
+     "hits": [], "note": "无『扫 K × 扫 D』 → N1"},
+    {"id": "S05", "query": "ICL performance saturates with number of examples power law scaling curve", "round": 2,
+     "hits": ["2404.11018"], "note": "拿到 K 轴形状（many-shot 单调上升 + 成本线性），但无双曲线同图 → N2"},
+    {"id": "S06", "query": "fine-tuning on new knowledge catastrophic forgetting hallucination", "round": 4,
+     "hits": ["2604.15574", "2601.18699"], "note": "C1 与容量前沿的核心；2604.15574 提供 UUID 单变量对照"},
+    {"id": "S07", "query": "effective context length versus nominal window in-context learning quality", "round": 4,
+     "hits": [], "note": "无直接测量 → N5；只能复用 T-PR-10 的 RULER"}
+  ],
+  "fetches": [
+    {"id": "F01", "url": "https://arxiv.org/abs/2402.12819", "ok": true, "used_for": "100 样本 break-even；+100-200% 方差；EMNLP 2025"},
+    {"id": "F02", "url": "https://arxiv.org/abs/2604.23267", "ok": true, "used_for": "D1-D3 desiderata；判别式检验；FT in-domain 更强、OOD 相当"},
+    {"id": "F03", "url": "https://arxiv.org/abs/2103.08493", "ok": true, "used_for": "prompt ≈ 100s data points 的换算先例"},
+    {"id": "F04", "url": "https://arxiv.org/abs/2205.05638", "ok": true, "used_for": "ICL 每次预测重算全部示例；PEFT better and cheaper；RAFT +6%"},
+    {"id": "F05", "url": "https://arxiv.org/abs/2404.11018", "ok": true, "used_for": "many-shot 可匹敌 FT；可覆写预训练偏置；成本随 K 线性；loss 不是有效指标"}
+  ],
+  "classification": {
+    "fully_qualified_D1_D4": 0,
+    "partially_qualified": ["2305.16938", "2604.23267", "2103.08493"],
+    "pseudo_controls_excluded": ["2402.12819", "2409.14673", "2409.03662", "2405.13181"]
+  },
+  "self_corrections": [
+    {"id": "C1", "what": "初稿把 C1『权重更固化』直接判成立，用灾难性遗忘文献作证",
+     "fix": "补入 2404.11018 的反证（many-shot ICL 可覆写预训练偏置），把 C1 改写为『persistence without presence：无需在场即可生效』并给出可测内容（使覆写成功的 K 临界值）",
+     "trigger": "任务书要求不允许整体打包接受直觉；反证存在时必须改判"},
+    {"id": "C2", "what": "初稿把 C3 判为『成立：ICL 便宜但降质』",
+     "fix": "改为不成立并换框架：ICL 前置≈0、边际=K×f；2205.05638 原文『processes all of the training examples every time a prediction is made』，2404.11018『inference cost increases linearly in the many-shot regime』",
+     "trigger": "成本结构必须按阶段拆（任务书 C3 明确要求拆 a/b）"},
+    {"id": "C3", "what": "初稿把 2402.12819 计入受控对照",
+     "fix": "移入伪对照清单（它比的是专用小模型 FT vs 通用大模型 ICL，违反 D1），但保留其 break-even 数字并注明用途",
+     "trigger": "任务书要求跨模型伪对照单独归类不得混入统计"},
+    {"id": "C4", "what": "初稿把 2103.08493 当作 ICL 的等价换算系数",
+     "fix": "标注它比的是 prompt vs head-based FT，不是 ICL demo 序列；降级为『换算系数存在性的先例』，真正的对齐改走 2604.23267 的形式语言（同源同分布）",
+     "trigger": "自我质询 1 指出循环论证风险"}
+  ],
+  "negative_results": [
+    {"id": "N1", "missing": "D1-D4 全满足的受控对照（扫 K × 扫 D × 成本同轴）", "queries": ["S01", "S02", "S04"], "conf_cap": 0.4},
+    {"id": "N2", "missing": "ICL(K) 与 FT(D) 双曲线同图 + 函数拟合", "queries": ["S03", "S05"], "conf_cap": 0.4},
+    {"id": "N3", "missing": "成本交叉点的美元/FLOP 计算", "queries": ["S03", "S06"], "conf_cap": 0.45},
+    {"id": "N4", "missing": "2305.16938 差值矩阵符号约定逐格复核", "queries": [], "conf_cap": null},
+    {"id": "N5", "missing": "ICL 质量 vs 名义/有效跨度的直接测量", "queries": ["S05", "S07"], "conf_cap": 0.4},
+    {"id": "N6", "missing": "Gekhman et al. 2024 的 arXiv 编号（仅二手转述）", "queries": [], "conf_cap": null}
+  ],
+  "channel_notes": [
+    "abs/ 5/5 成功；web_search 4 轮可用；未尝试 PDF（历史三次失败）",
+    "note/compression-unified-view-2026-11-07.md 不存在；pfb/ 目录不存在；loop/prompt-first/* 第六次缺失",
+    "S03/S04/S07 三组措辞全空 —— 与 T-PR-11 的经验一致：『没人用这个术语写出这件事』本身即证据，但判决限定为『文献中不存在』而非『学界从未想过』"
+  ]
+}
