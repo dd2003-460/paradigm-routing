@@ -1,0 +1,166 @@
+{
+  "meta": {
+    "task": "T-PR-08 MoE vs Mixture-of-Agents mathematical equivalence survey",
+    "repo": "https://github.com/dd2003-460/paradigm-routing",
+    "branch": "arena/62fe3fd4-paradigm-routing",
+    "executor": "Arena agent (LMArena Agent Mode)",
+    "executed_at_utc": "2026-11-07",
+    "task_book": "tasks/T-PR-08-moe-agent-equivalence.md (commit 4c42ad6)",
+    "deliverables": [
+      "research/moe-agent-equivalence-survey.md",
+      "research/search-log-moe-agent.json"
+    ],
+    "intent_anchor": "或者庞大的moe可以由一些大部分正交的小agent模拟吗，他们的纠缠，激活，有什么数学等价性吗，在什么层次等价性没有证明",
+    "append_only": true,
+    "note_on_append_only": "按时间顺序追加；已写 query 条目不删不改，更正另记于 self_corrections 字段。",
+    "groups": {
+      "S01-S04": "MoA / MoE 表达力 / ensemble 理论（Q1）",
+      "S05-S08": "正交性与训练耦合（Q2）",
+      "S09-S10": "纠缠：量子类比 / 通信复杂度（Q3）",
+      "S11-S12": "实用与泛化界（Q5 / L3）"
+    },
+    "criteria": {
+      "ADOPT": "命中一手 arXiv/会议论文，可用于某一层（L0-L4）判定",
+      "CONTEXT": "有信息但只是旁证（二手站、博客、厂商数据）",
+      "REJECT": "无可引 id 且无可用数字，或与问题无关",
+      "MIS-ID": "任务书/记忆给的编号与实访不符"
+    },
+    "equivalence_notation": {
+      "cap": "容量等价（两边都万能逼近 => 平凡真，本报告禁止用它做判决）",
+      "struct": "结构等价（给定 L 层 × E 专家/agent 参数预算，函数族同构或包含）",
+      "dyn": "动力学等价（优化轨迹可对应）"
+    }
+  },
+
+  "channels": {
+    "web_search": { "status": "OK", "quality_note": "可用；二手站（alphaxiv/emergentmind/pith/研究博客）占比高，凡二手数字一律 conf<=0.55 并注明。" },
+    "fetch_page_arxiv_abs": { "status": "OK" },
+    "fetch_page_arxiv_html": { "status": "OK", "note": "html/*vN 是拿到定理编号的主要通道（与 T-PR-07 一致）" },
+    "fetch_page_arxiv_pdf": { "status": "FAIL", "note": "PDF 直链本轮未再尝试（T-PR-07 已三次失败），一律走 abs/html" }
+  },
+
+  "queries": [
+    {
+      "id": "S01", "group": "Q1", "query": "Mixture-of-Agents 2406.04692 Wang layered proposers aggregator theoretical analysis formal guarantee",
+      "hits_reviewed": 5, "verdict": "ADOPT + NEGATIVE",
+      "adopted": ["2406.04692"],
+      "negative": "N3（MoA 输出分布 vs MoE 输出分布的匹配研究）——命中里无一篇做分布匹配",
+      "reason": "确认 MoA 纯经验：65.1% AlpacaEval 2.0 vs GPT-4o 57.5%，零形式化；同时命中 2603.20324（选择瓶颈，后来用于 L1）"
+    },
+    {
+      "id": "S02", "group": "Q1", "query": "mixture of experts theory expressive power universal approximation piecewise linear gating formal analysis",
+      "hits_reviewed": 5, "verdict": "ADOPT",
+      "adopted": ["2505.24205"],
+      "reason": "命中 Thm 5.2（depth-2L × E 专家 ⇒ E^L 分片），是本报告唯一的结构同构依据。其余命中为综述/百科式二手站（REJECT）"
+    },
+    {
+      "id": "S03", "group": "Q1", "query": "Self-MoA single model mixture-of-agents 2502.00674 quality diversity tradeoff arXiv",
+      "hits_reviewed": 5, "verdict": "ADOPT",
+      "adopted": ["2502.00674"],
+      "reason": "Self-MoA 6.6% (AlpacaEval 2.0) / 3.8% (MMLU/CRUX/MATH)；Vendi Score 质量-多样性回归，质量系数 > 多样性系数。**这是对'正交/多样 agent'最直接的反证**"
+    },
+    {
+      "id": "S04", "group": "Q1", "query": "universal approximation theorem for mixture of experts Nguyen Chamroukhi arXiv id density continuous functions",
+      "hits_reviewed": 5, "verdict": "ADOPT",
+      "adopted": ["1602.03683", "1707.03538", "1704.00946"],
+      "reason": "拿到 UAT 原始编号（1602.03683）与综述版定理编号（1707.03538 Thm 1 无速率 / Thm 2 有速率 c·g^{-k/q}）。1704.00946 只作补充未在主报告引用"
+    },
+    {
+      "id": "S05", "group": "Q2", "query": "expert similarity redundancy in Mixtral DeepSeek-V3 Qwen MoE cosine similarity expert representations measurement",
+      "hits_reviewed": 5, "verdict": "ADOPT",
+      "adopted": ["2406.18219"],
+      "secondary": ["MoE-Lens (ICLR 2025 workshop, no arXiv id)"],
+      "reason": "唯一给出真实 MoE 正交度数字的一手来源：Mixtral 专家间余弦 0.2-0.4（vs 原 FFN 0.6）、DeepSeek/Grok ≈0、末层 >0.8。MoE-Lens 的'单专家 0.95 近似 6 专家'只有二手转述，标 conf 0.5"
+    },
+    {
+      "id": "S06", "group": "Q2", "query": "ST-MoE 2202.08906 router z-loss training instability load balancing expert collapse gradient coupling",
+      "hits_reviewed": 5, "verdict": "ADOPT",
+      "adopted": ["2202.08906"],
+      "reason": "拿到 Eq.(5)(6)：L_total = L_CE + c_B L_B + c_z L_Z（c_z=0.001），是'训练期梯度耦合'的直接依据；并确认 top-k argmax 不可微 + fp32 路由"
+    },
+    {
+      "id": "S07", "group": "Q1/Q2", "query": "Soft MoE 2308.00951 fully differentiable routing weighted average slots deterministic soft assignment",
+      "hits_reviewed": 5, "verdict": "ADOPT",
+      "adopted": ["2308.00951"],
+      "reason": "Soft MoE 的 slot = 全 token 加权平均、输出 = slot 输出加权平均 => 完全可微的'加权和 ensemble'。**同时给出 L0 等价失败的关键理由：专家看到的是混合后的 token，MoA 的 agent 看到原始 prompt**"
+    },
+    {
+      "id": "S08", "group": "Q1", "query": "sparse autoencoder features versus MoE experts alignment interpretability do experts correspond to features",
+      "hits_reviewed": 5, "verdict": "ADOPT",
+      "adopted": ["2611.08089", "2510.23671", "2511.05745"],
+      "reason": "三个一手来源：2611.08089 给出 SAE 仿射 => latent 贡献可按专家精确分解（1-2 个主导专家）；2510.23671 明说 MoE 不是 dense 模型的聚合；2511.05745 说明专家不会自动专业化"
+    },
+    {
+      "id": "S09", "group": "Q3", "query": "mixture of experts routing quantum superposition analogy interference classical mixture density matrix",
+      "hits_reviewed": 5, "verdict": "ADOPT (否定性)",
+      "adopted": ["2512.22296"],
+      "definitional": ["Aaronson QC lecture 6 (classical mixture = diagonal, no interference)", "Wikipedia Density matrix"],
+      "reason": "QMoE 的干涉项 P=|A1|^2+|A2|^2+2|A1||A2|cos(phi1-phi2) 恰好量化了经典 MoE 缺什么 => 量子类比被**精确否定**，不是'没人研究'"
+    },
+    {
+      "id": "S10", "group": "Q3", "query": "communication complexity lower bound multi-agent LLM simulation message passing bits required coordination",
+      "hits_reviewed": 5, "verdict": "ADOPT",
+      "adopted": ["2510.13903"],
+      "reason": "本报告最强的不可模拟定理来源：recall Θ(1)/state tracking Θ(w)/k-hop（存疑）三档 + **parity 的多数投票需 w(N)=2^Ω(N^c) agents** + 通信有界=>单 agent 深度常数。附带命中经典通信复杂度（set disjointness）与 MARL 通信下界，未采纳"
+    },
+    {
+      "id": "S11", "group": "Q5", "query": "multi-agent LLM system cost performance comparison versus single larger model token cost equivalence analysis deployed serving",
+      "hits_reviewed": 5, "verdict": "CONTEXT + NEGATIVE",
+      "adopted": [],
+      "secondary": ["Anthropic engineering blog 2025 (15x/4x token, 90.2% lift, token explains ~80% variance) — 经 5 个二手站转述"],
+      "negative": "N1（同等预算的 MoE-FLOPs vs agent-token 对照曲线）、N2（已部署系统的等价性分析）",
+      "reason": "全部命中都是厂商博客/咨询博客，无任何学术等价性分析 => 这本身是本任务最清晰的空白。成本数字可用但必须标 conf 0.6 且注明二手"
+    },
+    {
+      "id": "S12", "group": "L3", "query": "\"mixture of experts\" versus ensemble theory generalization bound experts not independent iid assumption",
+      "hits_reviewed": 5, "verdict": "ADOPT (触发自我更正)",
+      "adopted": ["2604.09175"],
+      "reason": "命中 MoE 侧泛化界（Thm 3.4 / Cor 3.5，超额风险=逼近+估计+路由项）与两 regime 实验（M 16->64, 2.73->2.37）。**推翻了我第一版'L3 完全空白'的判断**；另命中经典 ME 的 i.i.d. 假设争议（Rasmussen & Ghahramani 2002）综述转述"
+    }
+  ],
+
+  "fetches": [
+    { "id": "F01", "url": "https://arxiv.org/abs/2406.04692", "status": "OK", "used_for": "MoA 结构 + 65.1% vs 57.5% 数字" },
+    { "id": "F02", "url": "https://arxiv.org/abs/2101.03961", "status": "OK", "used_for": "Switch: 7x 预训练加速、4x vs T5-XXL、JMLR、bf16" }
+  ],
+
+  "self_corrections": [
+    {
+      "id": "SC1",
+      "what_i_wrote_first": "§5 表中 L3（泛化保证）判定为『完全空白』",
+      "why_wrong": "首轮（S03/S06）只问『ensemble 泛化界能否搬到 MoE』，没问『MoE 自己的泛化界』；S12 一换词汇就命中 2604.09175",
+      "corrected_by": "S12 → 2604.09175 Thm 3.4 / Cor 3.5",
+      "fix_applied": "L3 改为『部分证明（仅 MoE 侧）』；AC5 一句话判决同步改为『L3 只有 MoE 侧泛化界』；§5 加显式自我更正段；来源表新增 #18"
+    },
+    {
+      "id": "SC2",
+      "what_i_wrote_first": "N1（成本-性能曲线）与 N2（部署系统等价性）在只跑过 S10 的情况下被写成『S10 组全部』",
+      "why_wrong": "S10 是通信复杂度 query，与成本无关；等于把没跑的渠道写成已跑",
+      "corrected_by": "补跑 S11",
+      "fix_applied": "两条负结果改为『S10/S11』，并把『有成本数据、无等价性分析』的区分写进 N2"
+    }
+  ],
+
+  "negative_searches": [
+    { "id": "N1", "target": "同等预算下 giant-MoE FLOPs vs L 层 M agent token 成本的对照曲线", "queries": ["S10", "S11"], "status": "NOT_FOUND", "conf_cap": 0.45 },
+    { "id": "N2", "target": "已部署多 agent 系统（vLLM 多实例 / function-calling 链）的等价性学术分析", "queries": ["S10", "S11"], "status": "NOT_FOUND", "conf_cap": 0.45 },
+    { "id": "N3", "target": "MoA 输出分布 vs MoE 输出分布的 KL/Wasserstein 匹配", "queries": ["S01", "S03"], "status": "NOT_FOUND", "conf_cap": 0.4 },
+    { "id": "N4", "target": "把 bagging/stacking 泛化界搬到非 i.i.d. 专家并显式量化 gap", "queries": ["S03", "S06", "S12"], "status": "NOT_FOUND", "conf_cap": 0.45 },
+    { "id": "N5", "target": "任务书给出的 id 2303.08774（标注 Bricken SAE）与 1906.02640（标注 Deep Ensembles）", "queries": [], "status": "NOT_USED_NOT_VERIFIED", "note": "按『未实访不引用』规则排除，未声称其错误；改用已实访替代来源（2611.08089 / 2510.23671 / 2511.05745 替代 SAE 侧；2502.00674 / 2603.20324 / 2406.18219 替代 ensemble 侧）", "conf_cap": null }
+  ],
+
+  "channel_notes": [
+    "二手站密度高：同一 Anthropic 数字在 o2devs / growthengineer / orbilontech / crispycontent / digitalelliptical 五站重复出现，可作为交叉印证但仍属同一原始来源，故只算 1 条来源、conf 0.6。",
+    "凡是『宁可少引也不凭记忆』的场合都写进了 N5：任务书的两个 id 未实访即不引用。",
+    "『换词汇重搜』再次奏效（与 T-PR-07 的教训一致）：从『ensemble generalization bound』换到『MoE generalization bound』命中了 L3 的关键论文。"
+  ],
+
+  "coverage_check": {
+    "AC1_lines": "284 行（>=250）",
+    "AC2_sources": 19,
+    "AC2_read": 14,
+    "AC3_L_table": "L0-L4 五格全部填写，(i)(ii)(iii) 齐全",
+    "AC4_adversarial": 3,
+    "AC5_one_sentence_verdict": "present (§0)"
+  }
+}
