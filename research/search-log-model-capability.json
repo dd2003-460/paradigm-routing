@@ -1,0 +1,57 @@
+{
+  "task": "T-PR-10",
+  "title": "「更强的模型」机制分解：激活 / 连接 / 校准",
+  "date": "2026-11-07",
+  "branch": "arena/62fe3fd4-paradigm-routing",
+  "anchor": "更强的模型是什么意思，moe激活更大，或者联系更强?或者校准更好?这些能看到吗",
+  "queries": [
+    {"id": "S01", "query": "mixture of experts routing entropy number of active experts correlates with task difficulty", "round": 1,
+     "hits": ["2403.07652", "2507.12419", "cs231n Do Experts Specialize", "2505.24205(ref)"],
+     "note": "命中 M1 核心：2403.07652 = Harder Tasks Need More Experts；同时命中反证 cs231n"},
+    {"id": "S01b", "query": "active experts proportion larger model capability scaling", "round": 2,
+     "hits": [], "note": "无结果 → N2（跨模型'激活比例'相关无文献）"},
+    {"id": "S02", "query": "attention span effective context length limits multi-step reasoning chain length model scale", "round": 1,
+     "hits": ["blog long-context guide", "blog practical limits", "NVIDIA blog"],
+     "note": "全部博客级，无 arXiv；迫使切换到 benchmark 名检索（S02b）"},
+    {"id": "S02b", "query": "RULER what's the real context size of long-context language models effective length half", "round": 2,
+     "hits": ["2404.06654"],
+     "note": "拿到 Table 3 全表：Jamba 256K→4K，LWM 1M→<4K，阈值 85.6%"},
+    {"id": "S02c", "query": "SSM hybrid attention state retention information decay per layer", "round": 3,
+     "hits": [], "note": "无按层类型的跨度贡献拆分 → N4"},
+    {"id": "S03", "query": "calibration ECE reasoning models self-correction backtracking error detection per-step", "round": 1,
+     "hits": ["2025.bea-1.65", "2605.19228", "2606.24281", "2504.05419", "Reasoning about Uncertainty"],
+     "note": "M3 主战场；2605.19228 给 +13.5%，2504.05419 给 ECE<0.1"},
+    {"id": "S03b", "query": "calibration improves per-step accuracy throughput not just backtracking", "round": 2,
+     "hits": [], "note": "无'校准→每步正确率'的对照 → N5"}
+  ],
+  "fetches": [
+    {"id": "F01", "url": "https://arxiv.org/abs/2403.07652", "ok": true, "used_for": "M1 主数字 +0.7% / BBH >2.0% / <90% 激活参数 / 层间差异"},
+    {"id": "F02", "url": "https://arxiv.org/html/2404.06654v3", "ok": true, "used_for": "RULER Table 3 逐模型有效长度"},
+    {"id": "F03", "url": "https://arxiv.org/html/2504.05419v1", "ok": true, "used_for": "探针 ECE<0.1、look-ahead、60% 位置 ECE 最低 0.03、overthinking"},
+    {"id": "F04", "url": "https://arxiv.org/html/2605.19228", "ok": true, "used_for": "步骤级 vs 答案级反馈 +13.5%"}
+  ],
+  "self_corrections": [
+    {"id": "C1", "what": "初稿把 M1 判决写成'有直接证据'而未区分'同模型按需分配'与'跨模型激活比例'",
+     "fix": "在 §2.3 拆分两种读法：前者有证据（+0.7%/+2.0%），后者无文献且有反证（cs231n 专家专门化下降、2510.23671 MoE≠dense 聚合）",
+     "trigger": "AC3 要求判决，但'更强=激活更大'本身有换义，不拆就是错判"},
+    {"id": "C2", "what": "初稿用博客表格写'Jamba 256K→~128K'",
+     "fix": "回源 2404.06654 Table 3：Jamba-base 有效长度实为 4K，不是 128K；博客数字错误",
+     "trigger": "数字化引用必须回源，博客二手数据不可用"},
+    {"id": "C3", "what": "初稿把注意力熵当作 MoE 路由熵的代理，用于本模型",
+     "fix": "§5 加警告：两者不是同一个量；本模型无 MoE ⇒ M1 应报'不可测'而非用代理凑数",
+     "trigger": "AC4 要求诚实评级，代理冒充会污染结论"}
+  ],
+  "negative_results": [
+    {"id": "N1", "missing": "两模型'只差一个机制'的受控因果实验", "queries": ["S01", "S02", "S03", "S02c"], "conf_cap": 0.35},
+    {"id": "N2", "missing": "激活专家数作为模型能力的跨模型相关", "queries": ["S01", "S01b"], "conf_cap": 0.4},
+    {"id": "N3", "missing": "'联系更强'的单一变量测量", "queries": ["S02", "S02b"], "conf_cap": 0.4},
+    {"id": "N4", "missing": "按层类型（SSM vs full-attn）的有效跨度贡献拆分", "queries": ["S02c"], "conf_cap": 0.4},
+    {"id": "N5", "missing": "校准对'每步正确率'而非'回溯率'的对照", "queries": ["S03", "S03b"], "conf_cap": 0.45}
+  ],
+  "channel_notes": [
+    "S02 一轮返回全部博客级内容 → 措辞切到 benchmark 名（RULER）才拿到一手表格：措辞切换第 4 次救回任务",
+    "arxiv html/*vN 4/4 抓取成功；abs/ 1/1",
+    "《Reasoning about Uncertainty》在各库均无 arXiv 号，只以 researchgate 392942416 记录，不予编造编号",
+    "loop/prompt-first/* 第四次缺失"
+  ]
+}

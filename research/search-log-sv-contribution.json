@@ -1,0 +1,57 @@
+{
+  "task": "T-PR-11",
+  "title": "信息搜集 × 校验 贡献函数",
+  "date": "2026-11-07",
+  "branch": "arena/62fe3fd4-paradigm-routing",
+  "anchor": "没有一个把'搜集质量 × 校验质量'合成一个可优化的贡献函数——全是单侧的",
+  "method_note": "任务书规定 5 个预置候选勿重复搜索，故本轮以 abs/ 直访核实为主，web_search 仅用于'合成目标'与'负面结果'两组开放检索",
+  "queries": [
+    {"id": "S01", "query": "joint objective search quality verification quality reward agentic retrieval", "round": 1, "hits": [], "note": "无乘积型联合目标 → N1"},
+    {"id": "S02", "query": "retrieval quality metric as reward signal RAG agent RL", "round": 1, "hits": [], "note": "返回均为 RAG 评测，无 reward 内的搜集质量项 → N2"},
+    {"id": "S03", "query": "multiplicative reward combination search verification product gating", "round": 2, "hits": [], "note": "无 → N1（第二措辞）"},
+    {"id": "S04", "query": "definition of search quality computable reward ground truth web agent", "round": 2, "hits": [], "note": "无 → N2（第二措辞）"},
+    {"id": "S05", "query": "joint search verifier training failed negative result instability", "round": 2, "hits": [], "note": "无失败报告 → N3"},
+    {"id": "S06", "query": "co-training retriever verifier collapse non-stationary reward", "round": 3, "hits": [], "note": "无 → N3（第二措辞）"},
+    {"id": "S07", "query": "synthesized contribution function agent search verify product objective", "round": 3, "hits": [], "note": "无 → N1（第三措辞）"}
+  ],
+  "preloaded_candidates_verified": [
+    {"id": "2601.14615", "verdict": "单侧（环境保真度替代搜集质量）", "key_fact": "9 benchmark 相对 ASearcher +10.6%；明确'corrupted reward signals punish correct reasoning / reward hallucination'"},
+    {"id": "2608.12764", "verdict": "伪合成（嵌套：outcome 定方向 × teacher 定幅度）", "key_fact": "2 倍梯度步数等效，单步 +5% 开销；明言 single outcome reward too sparse"},
+    {"id": "2510.14942", "verdict": "单侧（校验侧内部 hybrid 融合）", "key_fact": "40K 样本=10% 数据，ProcessBench 相对 +26%"},
+    {"id": "2609.20089", "verdict": "伪合成（最强，加权和）", "key_fact": "数学 +3.5% / 通用 +3.9%；verifier 对抗检测 84.2%；方差 2.03×"},
+    {"id": "2603.24579", "verdict": "单侧（信息不对称可训练结构）", "key_fact": "8B 达闭源竞争力；checker 隔离原答案"},
+    {"id": "2609.09776", "verdict": "单侧 + 标量定价（最接近数学形态）", "key_fact": "rho = compute↔capability 汇率；unsound 罚 N^(1/rho^2)；soundness 0.94->0.32@N=4096；frozen RM 崩塌 90%"}
+  ],
+  "fetches": [
+    {"id": "F01", "url": "https://arxiv.org/abs/2601.14615", "ok": true},
+    {"id": "F02", "url": "https://arxiv.org/abs/2608.12764", "ok": true},
+    {"id": "F03", "url": "https://arxiv.org/abs/2510.14942", "ok": true},
+    {"id": "F04", "url": "https://arxiv.org/abs/2609.20089", "ok": true},
+    {"id": "F05", "url": "https://arxiv.org/abs/2603.24579", "ok": true},
+    {"id": "F06", "url": "https://arxiv.org/abs/2609.09776", "ok": true}
+  ],
+  "self_corrections": [
+    {"id": "C1", "what": "初稿把 GroundedPRM 判为'伪合成'，因为它融合了两路信号",
+     "fix": "改为单侧：两路信号（tool execution + MCTS）**都在校验侧**，搜集侧为 0，不满足 C1",
+     "trigger": "回看判据 C1（必须是一个只依赖搜集轨迹的项）"},
+    {"id": "C2", "what": "初稿把假说 C 判为'成立：有人试过但被加权和取代了'",
+     "fix": "改为'证据不足'：UnifiedPlayers 是**规避**（明说 coordination challenge 后选择加权和），不是尝试后失败",
+     "trigger": "任务书要求允许'证据不足'判决，且不得把规避当作失败证据"},
+    {"id": "C3", "what": "初稿声称读过 pfb/lit-survey/2026-11-07-idea-list.md #27",
+     "fix": "实测该路径在本仓库不存在，全文改为'取自任务书转述，不声称读过'，并在来源表与负结果 N5 双重标注",
+     "trigger": "仓库核查；禁止虚构已读文件"}
+  ],
+  "negative_results": [
+    {"id": "N1", "missing": "乘积型（C2）搜集×校验联合目标", "queries": ["S01", "S03", "S07"], "conf_cap": 0.4},
+    {"id": "N2", "missing": "搜集质量的可计算定义", "queries": ["S02", "S04"], "conf_cap": 0.4},
+    {"id": "N3", "missing": "合成目标失败的负面结果（假说 C）", "queries": ["S05", "S06"], "conf_cap": 0.45},
+    {"id": "N4", "missing": "正文级公式核对（仅 1/6 到公式级）", "queries": [], "conf_cap": null},
+    {"id": "N5", "missing": "pfb/lit-survey/2026-11-07-idea-list.md", "queries": [], "conf_cap": null}
+  ],
+  "channel_notes": [
+    "abs/ 6/6 成功，0 失败",
+    "本轮 web_search 7 次全部空命中：'合成目标'这一说法在搜索引擎层面也无对应文献，与 abs/ 直访结论一致（互为验证）",
+    "pfb/lit-survey/ 目录在本仓库不存在 → 任务书引用链断裂，已上报",
+    "loop/prompt-first/* 第五次缺失"
+  ]
+}
