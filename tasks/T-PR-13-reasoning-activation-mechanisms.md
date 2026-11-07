@@ -20,7 +20,7 @@
 
 ## 【背景】（本地已有，勿重复搜）
 
-- `research/moe-agent-equivalence-survey.md`（T-PR-08）：**persona/logic 不正交的实测依据**——Mixtral 专家间权重余弦 0.2–0.4（upcycled 型），单 top-1 专家以 0.95 相似度逼近 6 专家集成（MoE-Lens）；但 SAE 侧（`2611.08089`）显示**参数层相似 ≠ 特征层私有**：多数 latent 只有 1–2 个主导专家且主导集合基本私有。⇒ 纠缠是真实的，但"切不开"需要区分参数层 vs 特征层两个尺度。
+- `research/moe-agent-equivalence-survey.md`（T-PR-08）：**persona/logic 相关的实测依据**——Mixtral 专家间权重余弦 0.2–0.4（upcycled 型），单 top-1 专家以 0.95 相似度逼近 6 专家集成（MoE-Lens）；但 SAE 侧（`2611.08089`）显示**参数层相似 ≠ 特征层私有**：多数 latent 只有 1–2 个主导专家且主导集合基本私有。⇒ **重要限定（成璐 2026-11-08 质询后修正）**：T-PR-08 测的是参数空间相关性，**不是**"persona 方向上无独立逻辑功能"。该相关性最可能的来源解释是**源头训练共现**（人类语料中 persona 与推理风格天然共现，预训练将其压入权重）——若此成立，纠缠是统计性的（原则上可解耦），而非结构性的（不可切开）。Q1/Q3 不得把"参数层相关"直接当"功能层不可分"用；"可解耦"与"prompt 可利用"是两个命题，后者受 S8A 负面证据约束（hypothesis-auditor persona 未带来新逻辑能力 ⇒ 该任务上 P(logic|persona) 可用方差不足）。
 - `research/model-capability-step-count-mechanisms.md`（T-PR-10 M3）：校准数据——o3-Mini 低→高推理 ECE 绝对 +7%（Claude +2%）；步骤级反馈修正成功率 +13.5%（`2605.19228`）；探针 ECE <0.1 可达（`2504.05419`）；CALIBER（`2606.24281`）ECE 相对 −52.5% ⇒ **校准是可训练的、状态依赖的**。
 - `research/icl-vs-finetuning-pareto.md`（T-PR-12）：容量前沿主变量是**表征干扰**而非知识量——UUID 类新命名空间 ~零遗忘（即使 1M facts），name-like 实体随规模恶化 ⇒ **context 层用新命名空间注入可绕开容量墙**，这是 prompt 激发的结构性优势。
 - `note/compression-unified-view-2026-11-07.md`：训练=压缩、推理=选择性解压、CoT=外化解压。本任务是该框架在"激活"维度的延伸：prompt = 选择解压哪部分，而不是重新压缩。
