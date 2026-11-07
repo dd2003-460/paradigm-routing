@@ -1,0 +1,46 @@
+[plant_once/T10/r0] ✓ '4096' (1287 chars)
+[plant_once/T10/r1] ✓ '4096' (1287 chars)
+[plant_once/T10/r2] ✓ '4096' (1287 chars)
+[plant_once/T20/r0] ✓ '4096' (2440 chars)
+[plant_once/T20/r1] ✓ '4096' (2440 chars)
+[plant_once/T20/r2] ✓ '4096' (2440 chars)
+[plant_once/T40/r0] ✓ '4096' (4767 chars)
+[plant_once/T40/r1] ✓ '4096' (4767 chars)
+[plant_once/T40/r2] ✓ '4096' (4767 chars)
+[plant_once/T60/r0] ✓ '4096' (7094 chars)
+[plant_once/T60/r1] ✓ '4096' (7094 chars)
+[plant_once/T60/r2] ✓ '4096' (7094 chars)
+[plant_once/T80/r0] ✓ '4096' (9421 chars)
+[plant_once/T80/r1] ✓ '4096' (9421 chars)
+[plant_once/T80/r2] ✓ '4096' (9421 chars)
+[restate_every_5/T10/r0] ✓ '4096' (1353 chars)
+[restate_every_5/T10/r1] ✓ '4096' (1353 chars)
+[restate_every_5/T10/r2] ✓ '4096' (1353 chars)
+[restate_every_5/T20/r0] ✓ '4096' (2539 chars)
+[restate_every_5/T20/r1] ✓ '4096' (2539 chars)
+[restate_every_5/T20/r2] ✓ '4096' (2539 chars)
+[restate_every_5/T40/r0] ✓ '4096' (4866 chars)
+[restate_every_5/T40/r1] ✓ '4096' (4866 chars)
+[restate_every_5/T40/r2] ✓ '4096' (4866 chars)
+[restate_every_5/T60/r0] ✓ '4096' (7193 chars)
+[restate_every_5/T60/r1] ✓ '4096' (7193 chars)
+[restate_every_5/T60/r2] ✓ '4096' (7193 chars)
+[restate_every_5/T80/r0] ✓ '4096' (9520 chars)
+[restate_every_5/T80/r1] ✓ '4096' (9520 chars)
+[restate_every_5/T80/r2] ✓ '4096' (9520 chars)
+
+Saved 30 records → /Users/a1-6/Desktop/workspace/paradigm-routing/experiments/turn-recall-decay/results_turn_decay.jsonl
+
+=== SUMMARY (recall by query turn) ===
+Cond             Turn   Recall   CtxChars  
+plant_once       T10    1.00     1287      
+plant_once       T20    1.00     2440      
+plant_once       T40    1.00     4767      
+plant_once       T60    1.00     7094      
+plant_once       T80    1.00     9421      
+restate_every_5  T10    1.00     1353      
+restate_every_5  T20    1.00     2539      
+restate_every_5  T40    1.00     4866      
+restate_every_5  T60    1.00     7193      
+restate_every_5  T80    1.00     9520      
+EXIT=0

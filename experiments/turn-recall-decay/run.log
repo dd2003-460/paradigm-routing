@@ -1,0 +1,46 @@
+[plant_once/T2/r0] ✓ '4096' (107 chars)
+[plant_once/T2/r1] ✓ '4096' (107 chars)
+[plant_once/T2/r2] ✓ '4096' (107 chars)
+[plant_once/T5/r0] ✓ '4096' (194 chars)
+[plant_once/T5/r1] ✓ '4096' (194 chars)
+[plant_once/T5/r2] ✓ '4096' (194 chars)
+[plant_once/T10/r0] ✓ '4096' (350 chars)
+[plant_once/T10/r1] ✓ '4096' (350 chars)
+[plant_once/T10/r2] ✓ '4096' (350 chars)
+[plant_once/T15/r0] ✓ '4096' (449 chars)
+[plant_once/T15/r1] ✓ '4096' (449 chars)
+[plant_once/T15/r2] ✓ '4096' (449 chars)
+[plant_once/T20/r0] ✓ '4096' (572 chars)
+[plant_once/T20/r1] ✓ '4096' (572 chars)
+[plant_once/T20/r2] ✓ '4096' (572 chars)
+[restate_every_5/T2/r0] ✓ '4096' (107 chars)
+[restate_every_5/T2/r1] ✓ '4096' (107 chars)
+[restate_every_5/T2/r2] ✓ '4096' (107 chars)
+[restate_every_5/T5/r0] ✓ '4096' (227 chars)
+[restate_every_5/T5/r1] ✓ '4096' (227 chars)
+[restate_every_5/T5/r2] ✓ '4096' (227 chars)
+[restate_every_5/T10/r0] ✓ '4096' (416 chars)
+[restate_every_5/T10/r1] ✓ '4096' (416 chars)
+[restate_every_5/T10/r2] ✓ '4096' (416 chars)
+[restate_every_5/T15/r0] ✓ '4096' (548 chars)
+[restate_every_5/T15/r1] ✓ '4096' (548 chars)
+[restate_every_5/T15/r2] ✓ '4096' (548 chars)
+[restate_every_5/T20/r0] ✓ '4096' (671 chars)
+[restate_every_5/T20/r1] ✓ '4096' (671 chars)
+[restate_every_5/T20/r2] ✓ '4096' (671 chars)
+
+Saved 30 records → /Users/a1-6/Desktop/workspace/paradigm-routing/experiments/turn-recall-decay/results_turn_decay.jsonl
+
+=== SUMMARY (recall by query turn) ===
+Cond             Turn   Recall   CtxChars  
+plant_once       T2     1.00     107       
+plant_once       T5     1.00     194       
+plant_once       T10    1.00     350       
+plant_once       T15    1.00     449       
+plant_once       T20    1.00     572       
+restate_every_5  T2     1.00     107       
+restate_every_5  T5     1.00     227       
+restate_every_5  T10    1.00     416       
+restate_every_5  T15    1.00     548       
+restate_every_5  T20    1.00     671       
+EXIT=0
