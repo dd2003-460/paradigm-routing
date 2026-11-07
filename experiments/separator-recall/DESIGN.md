@@ -68,3 +68,33 @@
 - 27B 在 8k context 上可能本身 recall 就很高（ceiling effect）→ 加长到 16k 或增加干扰段
 - 中文 token 化效率低（同样内容 token 数多）→ 长度梯度按 token 数算不按字数
 - vLLM 并发限制 → 串行跑，90 次 × ~3s = ~5 分钟，可接受
+
+---
+
+## v4 扩展：多字符 head-to-head（二阶效应检验，2026-11-07）
+
+v3 结论：`##` 标题（S1）比无分隔（S0）+20% recall（英文），空行（S2）无效。
+v4 问题：**字符选择是否真的二阶？** 即不同分隔符之间的差异 ≪ "有 vs 无"的差异？
+
+### 6 条件（同一套 20 facts + fillers，仅格式不同）
+
+| 条件 | 格式 | 测什么 |
+|------|------|--------|
+| S0 | 单换行拼接 | baseline（无结构） |
+| S1 | `## Topic` + `---` | 一阶参照（v3 的 good condition） |
+| S2 | 空行 | 弱结构 |
+| S3 | `[SEP]` token | 显式特殊 token（BERT 风格） |
+| S4 | `### Topic` | 更深 markdown 层级（字符变体） |
+| S5 | `1. 2. 3.` 编号 | 列表结构（用户问过的方向） |
+
+### 判决规则
+
+- Δ_presence = acc(best separator) − acc(S0)
+- Δ_character = acc(best separator) − acc(worst separator)
+- **Δ_char / Δ_presence < 0.1** → 二阶可忽略，确认"用什么字符不重要，有没有才重要"
+- **Δ_char / Δ_presence > 0.3** → 字符选择有一阶分量，需要进一步细分
+- 某语言 Δ_presence ≈ 0 → 该语言无一阶效应，ratio 不可解释（不强行下结论）
+
+### 规模
+
+4k tokens × 2 langs × 6 conds × 3 reps = 36 cells × 5 questions = 180 calls，~10-15 min。
