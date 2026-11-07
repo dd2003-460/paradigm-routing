@@ -86,7 +86,7 @@ Direct / CoT / ReAct / Plan-Execute / Reflection / **都不适用**
 ```
 paradigm-routing/
 ├── INDEX.md          ← 本文件
-├── research/         ← arena 调研产出（lit-survey-arena.md ✅）
+├── research/         ← arena 调研产出（lit-survey-arena.md ✅）+ idea-reasoning-core-induction-deduction.md（推理核心 idea，理论骨架）
 ├── experiments/      ← 实验代码+结果（Phase 2 待建）
 ├── memory/           ← 探索记录
 └── tasks/            ← 临时状态（arena-task-brief.md ✅）
